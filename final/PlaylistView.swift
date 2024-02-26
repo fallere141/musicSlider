@@ -26,9 +26,11 @@ struct playListView: View {
         NavigationView{
             List(playlists){
                 playlist in
-                Text(playlist.name)
-
-                Text(playlist.curator ?? "helo")
+                HStack{
+                    Text(playlist.name)
+                    
+                    Text(playlist.curator ?? "no curator")
+                }
 
             }
             
