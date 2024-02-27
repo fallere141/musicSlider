@@ -1,27 +1,28 @@
 //
-//  musicListView.swift
+//  SwiftUIView.swift
 //  final
 //
-//  Created by Fallere141 on 2/24/24.
+//  Created by Fallere141 on 2/27/24.
 //
 
 import SwiftUI
 import MusicKit
-//struct Item:Identifiable,Codable{
-//    var id=UUID()
-//    let name:String
-//    let artest:String
-//    let imageURL:URL?
-//    
-//    
-//}
 
-struct musicListView: View {
-    @State var songs = [Song]()
+struct TrackView: View {
+    @State var playlist: Playlist
+    @State var trackList:[Track] = []
+    
+    func showSongFromPlaylist(){
+        Task{
+            let detailedPlaylist = try await playlist.with([.tracks])
+            let tracks = detailedPlaylist.tracks ?? []
+            trackList = tracks.compactMap({$0})
+        }
+    }
+    
     var body: some View {
-
         NavigationView{
-            List(songs){
+            List(trackList){
                 song in
                 HStack{
                     VStack(alignment: .leading) {
@@ -33,30 +34,25 @@ struct musicListView: View {
                     }
                     Spacer()
                     AsyncImage(url: song.artwork?.url(width: 60, height: 60))
-                    {image in image
+                    {
+                        image in image
                             .resizable()
                             .frame(width: 60,height: 60,alignment: .center)
                             .clipShape(RoundedRectangle(cornerRadius: 5))
                     }
-                placeholder: {
-                    ProgressView()
-                }
-                        
-
-                }.onTapGesture {
-                    
+                    placeholder: {
+                        ProgressView()
+                    }
                 }
             }
             
         }.onAppear{
-
-            songs = musicData.shared.song.compactMap({$0})
+            
+            showSongFromPlaylist()
         }
     }
-    
-    
 }
 
-#Preview {
-    musicListView()
-}
+//#Preview {
+//    TrackView()
+//}

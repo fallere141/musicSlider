@@ -20,14 +20,39 @@ import MusicKit
 //}
 
 struct playListView: View {
-    @State var playlists=[Playlist]()
-    var body: some View {
+//    @State var playlists=[Playlist]()
+    @State private var selection = "All"
+    var playlists:[Playlist]
+    {
+        switch selection{
+        case "All":
+            return musicData.shared.playlist.compactMap({$0})
+        default:
+            return []
+        }
         
-        NavigationView{
+        
+    }
+    
+    
+    
+    
+    var body: some View {
+
+        NavigationStack{
+            Picker("Select", selection: $selection) {
+                Text("All").tag("All")
+                Text("Customized").tag("Customized")
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding()
+            
             List(playlists){
                 playlist in
+                NavigationLink(value: playlist){
                 HStack{
                     Text(playlist.name)
+//                    Text(playlist.id.rawValue)
                     Spacer()
                     AsyncImage(url: playlist.artwork?.url(width: 50, height: 50))
                     {
@@ -41,17 +66,39 @@ struct playListView: View {
                 placeholder: {
                     ProgressView()
                 } .frame(width: 75,height: 75,alignment: .center)
-                
-
+                    
+                    
+                }.onTapGesture {
+                    //                    showSongFromPlaylist(playlist: playlist)
+                    //                    NavigationLink
                 }
+            }
                 
             }
-            
-        }.onAppear{
-            //            fetechData()
-            //            playlists = Array(from: musicData.shared.playlist)
-            playlists = musicData.shared.playlist.compactMap({$0})
+            .navigationDestination(for: Playlist.self) { item in
+                TrackView(playlist: item)
+            }.toolbar {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    if selection != "All" {
+                        Button("add playlist") {
+                            
+                        }
+                    }
+                    // a transparent button just to make to sections looks the same
+                    else{
+                        Button("add playlist") {
+                            
+                        }.opacity(0)
+                    }
+                }
+            }
+
+
         }
+        
+
+        
+
     }
     
     
