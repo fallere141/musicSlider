@@ -11,7 +11,7 @@ struct ContentView: View {
     var body: some View {
         TabView {
             // Update to DetailView Later
-            musicListView()
+            DetailView()
                 .tabItem {
                     Label("Slider", systemImage: "music.note") }
             playListView()
