@@ -75,15 +75,15 @@ struct DetailView: View {
                                     }
                                 }
                             }
-                            //                            .gesture(
-                            //                                DragGesture()
-                            //                                    .onChanged { gesture in
-                            //                                        self.offset = gesture.translation
-                            //                                    }
-                            //                                    .onEnded { gesture in
-                            //                                        handleGestureEnd(gesture)
-                            //                                    }
-                            //                            )
+//                            .gesture(
+//                                DragGesture()
+//                                .onChanged { gesture in
+//                                    self.offset = gesture.translation
+//                                }
+//                                .onEnded { gesture in
+//                                    handleGestureEnd(gesture)
+//                                }
+//                            )
                             .opacity(isRemoved ? 0 : 1)
                             .offset(y: offset.height)
                             .padding(.horizontal, geometry.size.width * 0.05)
@@ -124,26 +124,34 @@ struct DetailView: View {
                             .padding(.leading)
                     }
                     
+                    Spacer().frame(height: 5)
                     ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 20) {
+                        HStack {
                             ForEach(playlists, id: \.self) { playlist in
                                 VStack {
-                                    Image(systemName: "arrow.down.circle")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 50, height: 50)
-                                    .frame(width: 100, height: 100)
+                                    AsyncImage(url: playlist.artwork?.url(width: 50, height: 50)) { image in
+                                        image
+                                            .resizable()
+                                            .scaledToFit()
+                                    } placeholder: {
+                                        Image(systemName: "arrow.down")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 50, height: 50)
+                                    }
+                                    .frame(width: 60, height: 60)
                                     .clipShape(Circle())
                                     
                                     Text(playlist.name)
                                         .font(.caption)
+                                        .lineLimit(2)
                                 }
-                                .frame(width: 120, height: 150)
+                                .frame(width: 60, height: 100)
                             }
                         }
                         .padding(.horizontal)
                     }
-                    .frame(height: 150)
+                    .frame(height: 100)
                     
                 }
             }
