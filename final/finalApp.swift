@@ -9,6 +9,9 @@ import SwiftUI
 
 @main
 struct finalApp: App {
+    
+    @State var musicdata = musicData.shared
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6A1AD6092B8D3F7F00EE8E6F /* dailyrecommandview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1AD6082B8D3F7F00EE8E6F /* dailyrecommandview.swift */; };
+		6A1AD60B2B8D456500EE8E6F /* musicData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1AD60A2B8D456500EE8E6F /* musicData.swift */; };
 		6A1C33482B8D285500F7575F /* PlaylistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1C33472B8D285500F7575F /* PlaylistView.swift */; };
 		6AB8084E2B89C009008CE9D8 /* finalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB8084D2B89C009008CE9D8 /* finalApp.swift */; };
 		6AB808502B89C009008CE9D8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB8084F2B89C009008CE9D8 /* ContentView.swift */; };
@@ -38,7 +39,9 @@
 
 /* Begin PBXFileReference section */
 		6A1AD6082B8D3F7F00EE8E6F /* dailyrecommandview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dailyrecommandview.swift; sourceTree = "<group>"; };
+		6A1AD60A2B8D456500EE8E6F /* musicData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = musicData.swift; sourceTree = "<group>"; };
 		6A1C33472B8D285500F7575F /* PlaylistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistView.swift; sourceTree = "<group>"; };
+		6AB79A802B8D629D00C11BEB /* final.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = final.entitlements; sourceTree = "<group>"; };
 		6AB8084A2B89C009008CE9D8 /* final.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = final.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6AB8084D2B89C009008CE9D8 /* finalApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = finalApp.swift; sourceTree = "<group>"; };
 		6AB8084F2B89C009008CE9D8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -101,7 +104,9 @@
 		6AB8084C2B89C009008CE9D8 /* final */ = {
 			isa = PBXGroup;
 			children = (
+				6AB79A802B8D629D00C11BEB /* final.entitlements */,
 				6AB808772B89C0F3008CE9D8 /* Info.plist */,
+				6A1AD60A2B8D456500EE8E6F /* musicData.swift */,
 				6AB8084D2B89C009008CE9D8 /* finalApp.swift */,
 				6A1AD6082B8D3F7F00EE8E6F /* dailyrecommandview.swift */,
 				6AB8084F2B89C009008CE9D8 /* ContentView.swift */,
@@ -271,6 +276,7 @@
 				6AB808502B89C009008CE9D8 /* ContentView.swift in Sources */,
 				6AB808792B89C398008CE9D8 /* musicListView.swift in Sources */,
 				6A1C33482B8D285500F7575F /* PlaylistView.swift in Sources */,
+				6A1AD60B2B8D456500EE8E6F /* musicData.swift in Sources */,
 				6A1AD6092B8D3F7F00EE8E6F /* dailyrecommandview.swift in Sources */,
 				6AB8084E2B89C009008CE9D8 /* finalApp.swift in Sources */,
 			);
@@ -433,6 +439,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = final/final.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"final/Preview Content\"";
@@ -464,6 +471,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = final/final.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"final/Preview Content\"";

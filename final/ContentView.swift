@@ -18,7 +18,7 @@ struct ContentView: View {
                     Label("playlist", systemImage: "text.line.first.and.arrowtriangle.forward") }
             dailyRecommandView()
                 .tabItem {
-                    Label("daily recommandation", systemImage: "text.line.first.and.arrowtriangle.forward") }
+                    Label("daily recommandation", systemImage: "play.circle") }
         }
     }
 }
