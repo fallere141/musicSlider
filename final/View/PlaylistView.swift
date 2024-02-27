@@ -29,12 +29,13 @@ struct playListView: View {
                 HStack{
                     Text(playlist.name)
                     Spacer()
-                    AsyncImage(url: playlist.artwork?.url(width: 75, height: 75))
+                    AsyncImage(url: playlist.artwork?.url(width: 50, height: 50))
                     {
                         image in image
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 75,height: 75,alignment: .center)
+                            .frame(width: 60,height: 60,alignment: .center)
+                            .clipShape(RoundedRectangle(cornerRadius: 5))
                     }
                     
                 placeholder: {

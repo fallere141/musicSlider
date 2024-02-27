@@ -30,7 +30,76 @@ import Foundation
 //
 //            print(response.recommendations)
         }
+    
         
+//        /// Adds an item to the data collection.
+//        func addItem(_ item: Item) {
+//            items.insert(item, at: 0)
+//            print("image added")
+//        }
+//        
+//        /// Removes an item from the data collection.
+//
+//        func removeItem(_ item: Item) {
+//            // Remove from items
+//            if let index = items.firstIndex(of: item) {
+//                items.remove(at: index)
+//            }
+//            // Remove from favoriteItems
+//            if let favoriteIndex = favoriteItems.firstIndex(of: item) {
+//                favoriteItems.remove(at: favoriteIndex)
+//            }
+//
+//            FileManager.default.removeItemFromDocumentDirectory(url: item.url)
+//            print("Image removed from all collections")
+//        }
+//        
+//        func deleteItem(_ item: Item) {
+//            if let index = items.firstIndex(of: item) {
+//                deletedItems.insert(item, at: 0)
+//                items.remove(at: index)
+//                print("image delete")
+//            }
+//        }
+//
+//        func removeAllDeletedItems() {
+//            for item in deletedItems {
+//                FileManager.default.removeItemFromDocumentDirectory(url: item.url)
+//            }
+//            deletedItems.removeAll()
+//            print("All deleted images have been removed.")
+//        }
+//
+//        func nextItem(after currentItem: Item) -> Item? {
+//            guard let currentIndex = items.firstIndex(of: currentItem) else {
+//                return nil
+//            }
+//            let nextIndex = currentIndex + 1
+//            return items.indices.contains(nextIndex) ? items[nextIndex] : items.first
+//        }
+//        
+//        func toggleFavorite(_ item: Item) {
+//            if favoriteItems.firstIndex(of: item) != nil {
+//                favoriteItems.insert(item, at: 0)
+//            } else {
+//                favoriteItems.append(item)
+//                print("image toggleFavorite")
+//            }
+//        }
+//
+//        func isFavorite(_ item: Item) -> Bool {
+//            favoriteItems.contains(item)
+//        }
+//        
+//        func addItemToFolder(_ item: Item, folderName: String) {
+//            if let index = folders.firstIndex(where: { $0.name == folderName }) {
+//                folders[index].items.append(item)
+//                print("Image added to folder: \(folderName)")
+//            } else {
+//                print("Folder not found.")
+//            }
+//        }
+
     }
     
     

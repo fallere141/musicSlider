@@ -24,13 +24,19 @@ struct musicListView: View {
             List(songs){
                 song in
                 HStack{
-                    Text(song.title)
+                    VStack(alignment: .leading) {
+                        Text(song.title)
+                            .font(.headline)
+                        Text(song.artistName)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
                     Spacer()
-                    Text(song.artistName)
-                    Spacer()
-                    AsyncImage(url: song.artwork?.url(width: 75, height: 75))
+                    AsyncImage(url: song.artwork?.url(width: 60, height: 60))
                     {image in image
-                            .frame(width: 75,height: 75,alignment: .center)
+                            .resizable()
+                            .frame(width: 60,height: 60,alignment: .center)
+                            .clipShape(RoundedRectangle(cornerRadius: 5))
                     }
                 placeholder: {
                     ProgressView()

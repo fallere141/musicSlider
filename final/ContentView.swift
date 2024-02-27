@@ -10,15 +10,19 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         TabView {
+            // Update to DetailView Later
             musicListView()
                 .tabItem {
-                    Label("music", systemImage: "play.house") }
+                    Label("music", systemImage: "music.note") }
+            musicListView()
+                .tabItem {
+                    Label("music", systemImage: "music.house") }
             playListView()
                 .tabItem {
-                    Label("playlist", systemImage: "text.line.first.and.arrowtriangle.forward") }
+                    Label("playlist", systemImage: "music.note.list") }
             dailyRecommandView()
                 .tabItem {
-                    Label("daily recommandation", systemImage: "play.circle") }
+                    Label("daily recommandation", systemImage: "music.quarternote.3") }
         }
     }
 }
