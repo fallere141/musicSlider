@@ -17,8 +17,9 @@ import MusicKit
 
 struct dailyRecommandView: View {
     @State var stations=[Station]()
+    @State var song=[Song]()
     var body: some View {
-//        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+//        Text("count\(stations.count)")
         NavigationView{
             List(stations){
                 station in
@@ -30,18 +31,16 @@ struct dailyRecommandView: View {
 //                    NavigationLink
                 }
             }
+//            Text(stations.first.name)
             
         }.onAppear{
+            stations = musicData.shared.recommandStation.compactMap({$0})
             
+//            song = stations[0]
         }
+        
     }
-//    private let request : MusicCatalogSearchRequest = {
-//        var request = MusicCatalogSearchRequest(term: "happy", types: [Song.self])
-//        request.limit = 25
-//        return request
-//    }()
-    
-//    private let request = MusicLibraryRequest<Song>()
+
     
 
     

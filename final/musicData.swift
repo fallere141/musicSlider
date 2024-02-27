@@ -24,17 +24,14 @@ import Foundation
         Task{
             await fetechSong()
             await fetechPlaylist()
-            
+            fetechRrecommand()
+//            let request = MusicPersonalRecommendationsRequest()
+//            let response = try await request.response()
+//
+//            print(response.recommendations)
         }
         
     }
-    
-    
-    
-    
-    
-    
-    
     
     
     
@@ -79,7 +76,7 @@ import Foundation
     
     
     
-    func fetechData(){
+    func fetechRrecommand(){
         Task{
            let status = await MusicAuthorization.request()
             switch status{

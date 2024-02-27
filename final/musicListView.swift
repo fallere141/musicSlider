@@ -28,11 +28,14 @@ struct musicListView: View {
                     Spacer()
                     Text(song.artistName)
                     Spacer()
-                    AsyncImage(url: song.artwork?.url(width: 75, height: 75)){_ in }
+                    AsyncImage(url: song.artwork?.url(width: 75, height: 75))
+                    {image in image
+                            .frame(width: 75,height: 75,alignment: .center)
+                    }
                 placeholder: {
                     ProgressView()
                 }
-                        .frame(width: 75,height: 75,alignment: .center)
+                        
 
                 }.onTapGesture {
                     
