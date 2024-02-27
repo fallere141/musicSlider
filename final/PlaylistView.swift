@@ -28,13 +28,19 @@ struct playListView: View {
                 playlist in
                 HStack{
                     Text(playlist.name)
-                    
+                    Spacer()
                     AsyncImage(url: playlist.artwork?.url(width: 75, height: 75))
-                    {_ in }
+                    {
+                        image in image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 75,height: 75,alignment: .center)
+                    }
+                    
                 placeholder: {
                     ProgressView()
-                }
-                .frame(width: 75,height: 75,alignment: .center)
+                } .frame(width: 75,height: 75,alignment: .center)
+                
 
                 }
                 
