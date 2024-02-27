@@ -13,16 +13,16 @@ struct ContentView: View {
             // Update to DetailView Later
             musicListView()
                 .tabItem {
-                    Label("music", systemImage: "music.note") }
-            musicListView()
-                .tabItem {
-                    Label("music", systemImage: "music.house") }
+                    Label("Slider", systemImage: "music.note") }
             playListView()
                 .tabItem {
-                    Label("playlist", systemImage: "music.note.list") }
+                    Label("Playlist", systemImage: "music.note.list") }
+            musicListView()
+                .tabItem {
+                    Label("Music", systemImage: "music.house") }
             dailyRecommandView()
                 .tabItem {
-                    Label("daily recommandation", systemImage: "music.quarternote.3") }
+                    Label("Daily for U", systemImage: "music.quarternote.3") }
         }
     }
 }
