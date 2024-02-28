@@ -126,7 +126,7 @@ struct DetailView: View {
                     
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 20) {
-                            ForEach(playlists, id: \.self) { playlist in
+                            ForEach(musicData.shared.playlist.filter({ musicData.shared.editablePlaylistID.contains($0.id)}).compactMap({$0}), id: \.self) { playlist in
                                 VStack {
                                     Image(systemName: "arrow.down.circle")
                                         .resizable()

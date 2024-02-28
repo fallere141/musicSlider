@@ -12,6 +12,7 @@ import Foundation
     var song:MusicItemCollection<Song> = []
     var playlist:MusicItemCollection<Playlist> = []
     var recommandStation:MusicItemCollection<Station> = []
+    var editablePlaylistID:[Playlist.ID] = []
     
     private let songRequest = MusicLibraryRequest<Song>()
     
@@ -25,6 +26,7 @@ import Foundation
             await fetechSong()
             await fetechPlaylist()
             fetechRrecommand()
+            loadCustiomizedPlaylist()
         }
     }
     
@@ -35,14 +37,14 @@ import Foundation
     func fetechSong() async{
         
         let status = await MusicAuthorization.request()
-//         var result:MusicLibraryResponse<Song>
+        //         var result:MusicLibraryResponse<Song>
         switch status{
         case.authorized:
             do{
                 
                 let result = try await songRequest.response()
                 song = result.items
-//                return result.items
+                //                return result.items
                 
             }catch{
                 return
@@ -52,7 +54,7 @@ import Foundation
         }
     }
     
-
+    
     
     func fetechPlaylist()async{
         let status = await MusicAuthorization.request()
@@ -60,8 +62,8 @@ import Foundation
         case.authorized:
             do{
                 let result = try await Playlistrequest.response()
-                                self.playlist = result.items
-//                return result.items
+                self.playlist = result.items
+                //                return result.items
             }catch{
                 return
             }
@@ -75,7 +77,7 @@ import Foundation
     
     func fetechRrecommand(){
         Task{
-           let status = await MusicAuthorization.request()
+            let status = await MusicAuthorization.request()
             switch status{
             case.authorized:
                 do{
@@ -93,41 +95,59 @@ import Foundation
         }
     }
     
-//    func findPlaylistByID(id:Playlist.ID)->Playlist{
-//        
-//        
-//
+    func findPlaylistByID(id:Playlist.ID)async ->Playlist?{
+        
+        let status = await MusicAuthorization.request()
+        //         var result:MusicLibraryResponse<Song>
+        switch status{
+        case.authorized:
+            
+            var nameRequest = MusicLibraryRequest<Playlist>.init()
+            nameRequest.filter(matching: \.id, equalTo: id)
+            do {
+                let nameResponse = try await nameRequest.response()
+                print(nameResponse.items)
+                //                        return nameRequest.
+                return nameResponse.items.first
+                
+            } catch {
+                
+                print("name request error: \(error)")
+                
+            }
+        default:
+            return nil
+        }
+        return nil
+    }
+    
+//    func syncfindPlaylistByID(id:Playlist.ID)->Playlist{
 //        Task{
-//            var nameRequest = MusicLibraryRequest<Playlist>.init()
-//            nameRequest.filter(matching: \.id, equalTo: id)
-//            do {
-//                let nameResponse = try await nameRequest.response()
-//                print(nameResponse.items)
-//                return nameRequest.
-//                
-//            } catch {
-//                
-//                print("name request error: \(error)")
-//                
-//            }
+//            return findPlaylistByID(id:id)
 //        }
 //    }
     
     func loadCustiomizedPlaylist(){
-        
-        if let data=UserDefaults.standard.data(forKey: "CustiomizedPlaylistTest"){
-            do{
-                let decodedItem = try JSONDecoder().decode([Playlist.ID].self,from: data)
-//                let todolist = decodedItem.compactMap({findPlaylistByID(id:$0)})
-            }catch{
-                return
+        Task{
+            if let data=UserDefaults.standard.data(forKey: "CustiomizedPlaylistTest"){
+                do{
+                    let decodedItem = try JSONDecoder().decode([Playlist.ID].self,from: data)
+                    editablePlaylistID = decodedItem
+                }catch{
+                    return
+                }
             }
+            await fetechPlaylist()
+            
         }
-        
-        
-        
-        
     }
     
-    
+    func saveCustiomizedPlaylist(){
+        do{
+            let data = try JSONEncoder().encode(editablePlaylistID)
+            UserDefaults.standard.set(data,forKey: "CustiomizedPlaylistTest")
+        }catch{
+            return
+        }
+    }
 }
