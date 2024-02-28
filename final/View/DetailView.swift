@@ -138,21 +138,43 @@ struct DetailView: View {
                                         Image(systemName: "arrow.down")
                                             .resizable()
                                             .scaledToFit()
-                                            .frame(width: 50, height: 50)
+                                            .frame(width: 40, height: 40)
                                             .foregroundColor(.gray)
                                     }
                                     .frame(width: 60, height: 60)
                                     .clipShape(Circle())
+                                    .onTapGesture {
+//                                        addToPlaylist(song: songs.first, playlist: playlist)
+                                    }
                                     
                                     Text(playlist.name)
                                         .font(.caption)
                                         .lineLimit(2)
                                         .frame(height: 40)
-                                    
+                                        
                                     Spacer()
                                 }
                                 .frame(width: 60, height: 100, alignment: .top)
                             }
+                            VStack(alignment: .center, spacing: 5) {
+                                Spacer().frame(height: 15)
+                                Image(systemName: "ellipsis")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 30, height: 30)
+                                    .foregroundColor(.gray)
+                                    .onTapGesture {
+    //                                    addNewPlaylist()
+                                    }
+                                Spacer().frame(height: 15)
+                                Text("add playlist")
+                                    .font(.caption)
+                                    .lineLimit(2)
+                                    .frame(height: 40)
+                                    
+                                Spacer()
+                            }
+                            .frame(width: 60, height: 100, alignment: .top)
                         }
                         .padding(.horizontal)
                     }
