@@ -17,6 +17,7 @@
 		6AB808552B89C00A008CE9D8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6AB808542B89C00A008CE9D8 /* Preview Assets.xcassets */; };
 		6AB808792B89C398008CE9D8 /* musicListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB808782B89C398008CE9D8 /* musicListView.swift */; };
 		CD07FDF72B8D901D008BC75E /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07FDF62B8D901D008BC75E /* DetailView.swift */; };
+		CDD931572B8EF93D00E98E99 /* DeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD931562B8EF93D00E98E99 /* DeleteView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,7 @@
 		6AB808772B89C0F3008CE9D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		6AB808782B89C398008CE9D8 /* musicListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = musicListView.swift; sourceTree = "<group>"; };
 		CD07FDF62B8D901D008BC75E /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		CDD931562B8EF93D00E98E99 /* DeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +130,7 @@
 				6A1C33472B8D285500F7575F /* PlaylistView.swift */,
 				CD07FDF62B8D901D008BC75E /* DetailView.swift */,
 				6A8FF4442B8E810600EA2606 /* TrackView.swift */,
+				CDD931562B8EF93D00E98E99 /* DeleteView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -262,6 +265,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDD931572B8EF93D00E98E99 /* DeleteView.swift in Sources */,
 				6AB808502B89C009008CE9D8 /* ContentView.swift in Sources */,
 				6AB808792B89C398008CE9D8 /* musicListView.swift in Sources */,
 				6A8FF4452B8E810600EA2606 /* TrackView.swift in Sources */,
