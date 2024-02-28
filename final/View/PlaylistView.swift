@@ -82,40 +82,40 @@ struct playListView: View {
                     }
                     
                 }
-                .navigationDestination(for: Playlist.self) { item in
-                    TrackView(playlist: item)
-                }.toolbar {
-                    ToolbarItemGroup(placement: .navigationBarTrailing) {
-                        if selection != "All" {
-                            Button("add playlist") {
-                                addingSheet.toggle()
-                                
-                                playlists = musicData.shared.playlist.compactMap({$0})
-                                customizedPlaylistID = musicData.shared.editablePlaylistID
-                                
-                            }
-                        }
-                        // a transparent button just to make to sections looks the same
-                        else{
-                            Button("add playlist") {
-                                
-                            }.opacity(0)
+            }
+            .navigationDestination(for: Playlist.self) { item in
+                TrackView(playlist: item)
+            }.toolbar {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    if selection != "All" {
+                        Button("add playlist") {
+                            addingSheet.toggle()
+                            playlists = musicData.shared.playlist.compactMap({$0})
+                            customizedPlaylistID = musicData.shared.editablePlaylistID
+                            
                         }
                     }
+                    // a transparent button just to make to sections looks the same
+                    else{
+                        Button("add playlist") {
+                            
+                        }.opacity(0)
+                    }
                 }
-                .sheet(isPresented: $addingSheet) {
-                    FormView(addingSheet: $addingSheet,userInput: $userInput,detail:$detail)
-                }
-            }.onAppear(){
-                playlists = musicData.shared.playlist.compactMap({$0})
-                customizedPlaylistID = musicData.shared.editablePlaylistID
-            }.refreshable {
-                playlists = musicData.shared.playlist.compactMap({$0})
-                customizedPlaylistID = musicData.shared.editablePlaylistID
             }
+            .sheet(isPresented: $addingSheet) {
+                FormView(addingSheet: $addingSheet,userInput: $userInput,detail:$detail)
+            }
+        }.onAppear(){
+            playlists = musicData.shared.playlist.compactMap({$0})
+            customizedPlaylistID = musicData.shared.editablePlaylistID
+        }.refreshable {
+            playlists = musicData.shared.playlist.compactMap({$0})
+            customizedPlaylistID = musicData.shared.editablePlaylistID
         }
     }
 }
+
 
 struct FormView: View {
     
@@ -123,7 +123,7 @@ struct FormView: View {
     @Binding var userInput: String
     @Binding var detail: String
     
-//    @State var selectColorFrom = ["red", "green", "yellow", "blue"]
+    //    @State var selectColorFrom = ["red", "green", "yellow", "blue"]
     var body: some View {
         NavigationView {
             Form {
@@ -131,8 +131,6 @@ struct FormView: View {
                     TextField("title",text: $userInput)
                     TextField("detail",text: $detail)
                 }
-                
-                
                 
                 Section {
                     Button("Save") {
@@ -148,8 +146,8 @@ struct FormView: View {
                                 //                                musicData.shared.saveCustiomizedPlaylist()
                             }
                         }
-//                        musicData.shared.saveCustiomizedPlaylist()
-//                        musicData.shared.loadCustiomizedPlaylist()
+                        //                        musicData.shared.saveCustiomizedPlaylist()
+                        //                        musicData.shared.loadCustiomizedPlaylist()
                         addingSheet.toggle()
                     }
                 }
