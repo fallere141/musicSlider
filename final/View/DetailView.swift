@@ -24,7 +24,7 @@ struct DetailView: View {
         NavigationView {
             GeometryReader { geometry in
                 VStack (alignment: .leading, spacing: 10) {
-                    Spacer().frame(height: 100)
+                    Spacer().frame(height: 80)
                     
                     if let firstSong = songs.first, let artworkURL = firstSong.artwork?.url(width: Int(geometry.size.width * 0.8), height: Int(geometry.size.width * 0.8)) {
                         ZStack(alignment: .center) {
@@ -116,19 +116,20 @@ struct DetailView: View {
                     if let firstSong = songs.first {
                         let artistName = firstSong.artistName
                         Text(firstSong.title)
-                            .font(.title)
+                            .font(.system(size: 28))
+                            .bold()
                             .padding(.leading)
                         Text(artistName)
-                            .font(.headline)
+                            .font(.system(size: 18))
                             .foregroundColor(.gray)
                             .padding(.leading)
                     }
                     
-                    Spacer().frame(height: 5)
+                    Spacer().frame(height: 15)
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
                             ForEach(playlists, id: \.self) { playlist in
-                                VStack {
+                                VStack(alignment: .center, spacing: 5) {
                                     AsyncImage(url: playlist.artwork?.url(width: 50, height: 50)) { image in
                                         image
                                             .resizable()
@@ -138,6 +139,7 @@ struct DetailView: View {
                                             .resizable()
                                             .scaledToFit()
                                             .frame(width: 50, height: 50)
+                                            .foregroundColor(.gray)
                                     }
                                     .frame(width: 60, height: 60)
                                     .clipShape(Circle())
@@ -145,14 +147,16 @@ struct DetailView: View {
                                     Text(playlist.name)
                                         .font(.caption)
                                         .lineLimit(2)
+                                        .frame(height: 40)
+                                    
+                                    Spacer()
                                 }
-                                .frame(width: 60, height: 100)
+                                .frame(width: 60, height: 100, alignment: .top)
                             }
                         }
                         .padding(.horizontal)
                     }
                     .frame(height: 100)
-                    
                 }
             }
             .navigationBarItems(leading: Button(action: {

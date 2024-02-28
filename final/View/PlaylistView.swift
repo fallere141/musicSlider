@@ -61,11 +61,14 @@ struct playListView: View {
                             .scaledToFit()
                             .frame(width: 60,height: 60,alignment: .center)
                             .clipShape(RoundedRectangle(cornerRadius: 5))
+                    }placeholder: {
+                        Image("DefaultPlaylist")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 60, height: 60)
+                            .foregroundColor(.gray)
+                            .clipShape(RoundedRectangle(cornerRadius: 5))
                     }
-                    
-                placeholder: {
-                    ProgressView()
-                } .frame(width: 75,height: 75,alignment: .center)
                     
                     
                 }.onTapGesture {
