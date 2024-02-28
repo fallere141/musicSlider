@@ -13,6 +13,9 @@ import Foundation
     var playlist:MusicItemCollection<Playlist> = []
     var recommandStation:MusicItemCollection<Station> = []
     
+    var deletedSongs: [Song.ID] = []
+    var favoriteSongs: [Song.ID] = []
+    
     private let songRequest = MusicLibraryRequest<Song>()
     
     static let shared = musicData()
@@ -39,7 +42,6 @@ import Foundation
         switch status{
         case.authorized:
             do{
-                
                 let result = try await songRequest.response()
                 song = result.items
 //                return result.items
@@ -52,8 +54,31 @@ import Foundation
         }
     }
     
-
+    func toggleFavorite(_ song: Song) {
+        if let index = favoriteSongs.firstIndex(of: song.id) {
+            favoriteSongs.remove(at: index)
+            print(favoriteSongs)
+        } else {
+            favoriteSongs.append(song.id)
+            print("favorite: ", favoriteSongs)
+        }
+    }
     
+    func markSongAsDeleted(_ song: Song) {
+        guard !deletedSongs.contains(song.id) else { return }
+        deletedSongs.append(song.id)
+        print("deleted: ", deletedSongs)
+    }
+
+//    func deleteListSongs() {
+//        for songId in deletedSongs {
+//            if let index = song.firstIndex(where: { $0.id == songId }) {
+//                song.remove(at: index)
+//            }
+//        }
+//        deletedSongs.removeAll()
+//    }
+//    
     func fetechPlaylist()async{
         let status = await MusicAuthorization.request()
         switch status{
@@ -117,7 +142,7 @@ import Foundation
         
         if let data=UserDefaults.standard.data(forKey: "CustiomizedPlaylistTest"){
             do{
-                let decodedItem = try JSONDecoder().decode([Playlist.ID].self,from: data)
+                _ = try JSONDecoder().decode([Playlist.ID].self,from: data)
 //                let todolist = decodedItem.compactMap({findPlaylistByID(id:$0)})
             }catch{
                 return
