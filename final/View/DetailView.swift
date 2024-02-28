@@ -22,6 +22,8 @@ struct DetailView: View {
     @State private var isPlaying = false
     @State private var rotationDegrees = 0.0
     @State private var currentSongIndex = 0
+    
+    @State private var imageScaleStates: [String: Bool] = [:]
 
     var rotationTimer = Timer.publish(every: 0.02, on: .main, in: .common).autoconnect()
 
@@ -185,7 +187,7 @@ struct DetailView: View {
                             .padding(.horizontal)
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
-                                ForEach(musicData.shared.playlist.filter({ musicData.shared.editablePlaylistID.contains($0.id)}).compactMap({$0}), id: \.self) { playlist in
+                                ForEach( musicData.shared.playlist.compactMap({$0}), id: \.self) { playlist in
                                     VStack(alignment: .center, spacing: 5) {
                                         AsyncImage(url: playlist.artwork?.url(width: 50, height: 50)) { image in
                                             image
@@ -200,9 +202,18 @@ struct DetailView: View {
                                         }
                                         .frame(width: 60, height: 60)
                                         .clipShape(Circle())
+                                        .scaleEffect(imageScaleStates[playlist.id.rawValue, default: false] ? 0.8 : 1)
+                                        .animation(.easeInOut(duration: 0.2), value: imageScaleStates[playlist.id.rawValue, default: false])
                                         .onTapGesture {
+                                            imageScaleStates[playlist.id.rawValue] = true
+                                            let song = songs[currentSongIndex]
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                                imageScaleStates[playlist.id.rawValue] = false
+                                            }
                                             Task{
-                                                await addToPlaylist(song: songs.first!, playlist: playlist)
+                                                await addToPlaylist(song: song, playlist: playlist)
+                                                imageScaleStates[playlist.id.rawValue] = false
+                                                
                                             }
                                         }
                                         
