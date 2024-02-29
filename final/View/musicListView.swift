@@ -12,7 +12,9 @@ import MusicKit
 struct musicListView: View {
     @State var songs = [Song]()
     @State var filteredSongs: [Song] = []
+    
     @State private var deletedSongs: [Song.ID] = []
+    @State private var deletedRecord: [Song.ID] = []
     @State private var favoriteSongs: [Song.ID] = []
     @ObservedObject var globalState: GlobalState
     
@@ -62,17 +64,26 @@ struct musicListView: View {
             songs = musicData.shared.song.compactMap { $0 }
             deletedSongs = musicData.shared.deletedSongs
             favoriteSongs = musicData.shared.favoriteSongs
-            filteredSongs = songs.filter { !deletedSongs.contains($0.id) }
+            deletedRecord = musicData.shared.deletedRecord
+            filteredSongs = songs.filter { song in
+                !deletedSongs.contains(song.id) && !deletedRecord.contains(song.id)
+            } 
         }.onChange(of: musicData.shared.deletedSongs) { _, _ in
             songs = musicData.shared.song.compactMap { $0 }
             deletedSongs = musicData.shared.deletedSongs
             favoriteSongs = musicData.shared.favoriteSongs
-            filteredSongs = songs.filter { !deletedSongs.contains($0.id) }
+            deletedRecord = musicData.shared.deletedRecord
+            filteredSongs = songs.filter { song in
+                !deletedSongs.contains(song.id) && !deletedRecord.contains(song.id)
+            }
         }.refreshable {
             songs = musicData.shared.song.compactMap { $0 }
             deletedSongs = musicData.shared.deletedSongs
             favoriteSongs = musicData.shared.favoriteSongs
-            filteredSongs = songs.filter { !deletedSongs.contains($0.id) }
+            deletedRecord = musicData.shared.deletedRecord
+            filteredSongs = songs.filter { song in
+                !deletedSongs.contains(song.id) && !deletedRecord.contains(song.id)
+            }
         }
     }
 }

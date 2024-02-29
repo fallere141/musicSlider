@@ -15,6 +15,7 @@ import Foundation
     var editablePlaylistID:[Playlist.ID] = []
     
     var deletedSongs: [Song.ID] = []
+    var deletedRecord: [Song.ID] = []
     var favoriteSongs: [Song.ID] = []
 
     
@@ -32,12 +33,13 @@ import Foundation
     }
     
     func initialize() async {
-        await fetechSong()
-        await fetechPlaylist()
-        fetechRrecommand()
+        await fetchSong()
+        await fetchPlaylist()
+        fetchRrecommand()
         loadCustiomizedPlaylist()
         
         loadDeletedSongs()
+        loadDeletedRecord()
         loadFavoriteSongs()
     }
     
@@ -96,11 +98,10 @@ import Foundation
     }
     
     func deleteListSongs() {
-//        songs.removeAll { song in
-//            deletedSongs.contains(song.id)
-//        }
+        deletedRecord.append(contentsOf: deletedSongs)
         deletedSongs.removeAll()
         saveDeletedSongs()
+        saveDeletedRecord()
     }
     
     func saveDeletedSongs() {
@@ -123,10 +124,31 @@ import Foundation
             print("Failed to load deleted songs: \(error)")
         }
     }
+    
+    func saveDeletedRecord() {
+        do {
+            let data = try JSONEncoder().encode(deletedRecord)
+            UserDefaults.standard.set(data, forKey: "DeletedRecord")
+        } catch {
+            print("Failed to save deleted record: \(error)")
+        }
+    }
+    
+    func loadDeletedRecord() {
+        guard let data = UserDefaults.standard.data(forKey: "DeletedRecord") else { return }
+        do {
+            let decodedDeletedRecord = try JSONDecoder().decode([Song.ID].self, from: data)
+            DispatchQueue.main.async {
+                self.deletedRecord = decodedDeletedRecord
+            }
+        } catch {
+            print("Failed to load deleted record: \(error)")
+        }
+    }
 
 
     
-    func fetechSong () async {
+    func fetchSong () async {
         
         let status = await MusicAuthorization.request()
         //         var result:MusicLibraryResponse<Song>
@@ -145,7 +167,7 @@ import Foundation
         }
     }
     
-    func fetechPlaylist () async {
+    func fetchPlaylist () async {
         let status = await MusicAuthorization.request()
         switch status{
         case.authorized:
@@ -162,7 +184,7 @@ import Foundation
         }
     }
     
-    func fetechRrecommand () {
+    func fetchRrecommand () {
         Task{
             let status = await MusicAuthorization.request()
             switch status{
@@ -234,7 +256,7 @@ import Foundation
 //                return
 
             }
-            await fetechPlaylist()
+            await fetchPlaylist()
             
         }
     }

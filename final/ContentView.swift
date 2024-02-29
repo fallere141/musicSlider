@@ -24,7 +24,7 @@ struct ContentView: View {
             
             musicListView(globalState: globalState)
                 .tabItem {
-                    Label("Music", systemImage: "music.house")
+                    Label("Music Library", systemImage: "music.house")
                 }.tag(2)
             
             dailyRecommandView()

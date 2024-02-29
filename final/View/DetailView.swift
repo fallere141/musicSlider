@@ -16,18 +16,17 @@ struct DetailView: View {
     @State var songs: [Song] = []
     @State var playlists: [Playlist] = []
     @State var filteredSongs: [Song] = []
-
+    
     @State private var deletedSongs: [Song.ID] = []
+    @State private var deletedRecord: [Song.ID] = []
     @State private var favoriteSongs: [Song.ID] = []
     
     @State private var offset = CGSize.zero
     @State private var isRemoved = false
-    @State private var showingHelpAlert = false
     @State private var isPlaying = false
     @State private var rotationDegrees = 0.0
     @State var currentSongIndex: Int
            
-    @State private var showAddAlert = false
     @State private var alertAddMessage = ""
     @State private var showAlertType: AlertType? = nil
     
@@ -79,6 +78,8 @@ struct DetailView: View {
                                     Image(systemName: "photo")
                                         .resizable()
                                         .scaledToFit()
+                                        .frame(width: geometry.size.width * 0.55, height: geometry.size.width * 0.55)
+                                        .clipShape(Circle())
                                 @unknown default:
                                     EmptyView()
                                 }
@@ -322,28 +323,50 @@ struct DetailView: View {
                 }
             }
         }.onAppear{
-            self.currentSongIndex = globalState.detailViewSongIndex
-            
-            songs = musicData.shared.song.compactMap { $0 }
-            deletedSongs = musicData.shared.deletedSongs
-            filteredSongs = songs.filter { !deletedSongs.contains($0.id) }
-            playlists = musicData.shared.playlist.compactMap({$0})
-
+            self.songs = musicData.shared.song.compactMap { $0 }
+            self.deletedSongs = musicData.shared.deletedSongs
+            self.deletedRecord = musicData.shared.deletedRecord
+            self.filteredSongs = self.songs.filter { song in
+                !(self.deletedSongs.contains(song.id) || self.deletedRecord.contains(song.id))
+            }
             self.favoriteSongs = musicData.shared.favoriteSongs
+            self.playlists = musicData.shared.playlist.compactMap({$0})
         }.onChange(of: musicData.shared.deletedSongs) { _, _ in
-            songs = musicData.shared.song.compactMap { $0 }
-            deletedSongs = musicData.shared.deletedSongs
-            filteredSongs = songs.filter { !deletedSongs.contains($0.id) }
-            playlists = musicData.shared.playlist.compactMap({$0})
-
+            self.songs = musicData.shared.song.compactMap { $0 }
+            self.deletedSongs = musicData.shared.deletedSongs
+            self.deletedRecord = musicData.shared.deletedRecord
+            self.filteredSongs = self.songs.filter { song in
+                !(self.deletedSongs.contains(song.id) || self.deletedRecord.contains(song.id))
+            }
             self.favoriteSongs = musicData.shared.favoriteSongs
+            self.playlists = musicData.shared.playlist.compactMap({$0})
+        }.onChange(of: musicData.shared.song) { _, _ in
+            self.songs = musicData.shared.song.compactMap { $0 }
+            self.deletedSongs = musicData.shared.deletedSongs
+            self.deletedRecord = musicData.shared.deletedRecord
+            self.filteredSongs = self.songs.filter { song in
+                !(self.deletedSongs.contains(song.id) || self.deletedRecord.contains(song.id))
+            }
+            self.favoriteSongs = musicData.shared.favoriteSongs
+            self.playlists = musicData.shared.playlist.compactMap({$0})
+        }.onChange(of: musicData.shared.deletedRecord) { _, _ in
+            self.songs = musicData.shared.song.compactMap { $0 }
+            self.deletedSongs = musicData.shared.deletedSongs
+            self.deletedRecord = musicData.shared.deletedRecord
+            self.filteredSongs = self.songs.filter { song in
+                !(self.deletedSongs.contains(song.id) || self.deletedRecord.contains(song.id))
+            }
+            self.favoriteSongs = musicData.shared.favoriteSongs
+            self.playlists = musicData.shared.playlist.compactMap({$0})
         }.refreshable {
-            songs = musicData.shared.song.compactMap { $0 }
-            deletedSongs = musicData.shared.deletedSongs
-            filteredSongs = songs.filter { !deletedSongs.contains($0.id) }
-            playlists = musicData.shared.playlist.compactMap({$0})
-
+            self.songs = musicData.shared.song.compactMap { $0 }
+            self.deletedSongs = musicData.shared.deletedSongs
+            self.deletedRecord = musicData.shared.deletedRecord
+            self.filteredSongs = self.songs.filter { song in
+                !(self.deletedSongs.contains(song.id) || self.deletedRecord.contains(song.id))
+            }
             self.favoriteSongs = musicData.shared.favoriteSongs
+            self.playlists = musicData.shared.playlist.compactMap({$0})
         }
     }
     

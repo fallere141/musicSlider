@@ -63,7 +63,7 @@ struct DeleteView: View {
                     title: Text("Confirm Delete"),
                     message: Text("Are you sure you want to permanently delete these songs?"),
                     primaryButton: .destructive(Text("Delete")) {
-//                        musicData.shared.deleteListSongs()
+                        musicData.shared.deleteListSongs()
                     },
                     secondaryButton: .cancel()
                 )
@@ -77,7 +77,8 @@ struct DeleteView: View {
         }
     }
 
-    
+
+
 }
 
 #Preview {
