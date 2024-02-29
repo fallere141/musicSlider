@@ -39,9 +39,9 @@ import Foundation
     
     
     
-
     
-
+    
+    
     func toggleFavorite(_ song: Song) {
         if let index = favoriteSongs.firstIndex(of: song.id) {
             favoriteSongs.remove(at: index)
@@ -51,7 +51,7 @@ import Foundation
             print("favorite: ", favoriteSongs)
         }
     }
-
+    
     
     func markSongAsDeleted(_ song: Song) {
         guard !deletedSongs.contains(song.id) else { return }
@@ -68,9 +68,9 @@ import Foundation
     }
     
     func deleteListSongs() {
-//        songs.removeAll { song in
-//            deletedSongs.contains(song.id)
-//        }
+        //        songs.removeAll { song in
+        //            deletedSongs.contains(song.id)
+        //        }
         deletedSongs.removeAll()
         saveDeletedSongs()
     }
@@ -95,8 +95,8 @@ import Foundation
             print("Failed to load deleted songs: \(error)")
         }
     }
-
-
+    
+    
     
     func fetechSong() async{
         
@@ -182,14 +182,14 @@ import Foundation
         return nil
     }
     
-//    func syncfindPlaylistByID(id:Playlist.ID)->Playlist{
-//        Task{
-//            return findPlaylistByID(id:id)
-//        }
-//    }
+    //    func syncfindPlaylistByID(id:Playlist.ID)->Playlist{
+    //        Task{
+    //            return findPlaylistByID(id:id)
+    //        }
+    //    }
     
     func loadCustiomizedPlaylist(){
-
+        
         Task{
             if let data=UserDefaults.standard.data(forKey: "CustiomizedPlaylistTest"){
                 do{
@@ -198,15 +198,15 @@ import Foundation
                 }catch{
                     return
                 }
-
-//        
-//        if let data=UserDefaults.standard.data(forKey: "CustiomizedPlaylistTest"){
-//            do{
-//                _ = try JSONDecoder().decode([Playlist.ID].self,from: data)
-////                let todolist = decodedItem.compactMap({findPlaylistByID(id:$0)})
-//            }catch{
-//                return
-
+                
+                //
+                //        if let data=UserDefaults.standard.data(forKey: "CustiomizedPlaylistTest"){
+                //            do{
+                //                _ = try JSONDecoder().decode([Playlist.ID].self,from: data)
+                ////                let todolist = decodedItem.compactMap({findPlaylistByID(id:$0)})
+                //            }catch{
+                //                return
+                
             }
             await fetechPlaylist()
             
