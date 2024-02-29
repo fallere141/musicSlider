@@ -75,11 +75,9 @@ struct DetailView: View {
                                         .frame(width: geometry.size.width * 0.55, height: geometry.size.width * 0.55)
                                         .clipShape(Circle())
                                 case .failure:
-                                    Image(systemName: "photo")
-                                        .resizable()
-                                        .scaledToFit()
+                                    Circle()
+                                        .foregroundColor(.gray)
                                         .frame(width: geometry.size.width * 0.55, height: geometry.size.width * 0.55)
-                                        .clipShape(Circle())
                                 @unknown default:
                                     EmptyView()
                                 }

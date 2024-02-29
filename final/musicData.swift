@@ -7,6 +7,12 @@
 import MusicKit
 import Foundation
 
+enum DataLoadingState {
+    case loading
+    case loaded
+    case failed(Error)
+}
+
 //@Observable
 @Observable class musicData{
     var song:MusicItemCollection<Song> = []
@@ -17,6 +23,8 @@ import Foundation
     var deletedSongs: [Song.ID] = []
     var deletedRecord: [Song.ID] = []
     var favoriteSongs: [Song.ID] = []
+    
+    var loadingState: DataLoadingState = .loading
 
     
     private let songRequest = MusicLibraryRequest<Song>()
@@ -102,6 +110,12 @@ import Foundation
         deletedSongs.removeAll()
         saveDeletedSongs()
         saveDeletedRecord()
+    }
+    
+    
+    func recoverAllDeletedSongs() {
+        deletedSongs.removeAll()
+        saveDeletedSongs()
     }
     
     func saveDeletedSongs() {
