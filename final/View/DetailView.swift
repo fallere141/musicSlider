@@ -8,6 +8,7 @@
 import SwiftUI
 import MusicKit
 import Combine
+import MediaPlayer
 
 struct DetailView: View {
     @State var songs: [Song] = []
@@ -23,6 +24,9 @@ struct DetailView: View {
     @State private var isPlaying = false
     @State private var rotationDegrees = 0.0
     @State private var currentSongIndex = 0
+           
+    @State private var showAddAlert = false
+    @State private var alertAddMessage = ""
     
     @State private var imageScaleStates: [String: Bool] = [:]
 
@@ -253,6 +257,7 @@ struct DetailView: View {
                             .padding(.horizontal)
                         }
                         .frame(height: 100)
+                        
                     }
                 }
             }
@@ -283,6 +288,9 @@ struct DetailView: View {
             }
             .alert(isPresented: $showingHelpAlert) {
                 Alert(title: Text("Help"), message: Text("Slide left to switch\n Slide up to delete\n Slide down to like"), dismissButton: .default(Text("OK")))
+            }
+            .alert(isPresented: $showAddAlert) {
+                Alert(title: Text("Error"), message: Text(alertAddMessage), dismissButton: .default(Text("OK")))
             }
         }.onAppear{
             songs = musicData.shared.song.compactMap { $0 }
@@ -329,7 +337,10 @@ struct DetailView: View {
             let _ = try await MusicLibrary.shared.add(song, to: playlist)
             print("Song \(song.title) was successfully added to the playlist \(playlist.name).")
         } catch {
-            debugPrint(error)
+            print("Failed to add song to playlist: \(error.localizedDescription)")
+
+            self.showAddAlert = true
+            self.alertAddMessage = "This playlist is Public"
         }
     }
 }

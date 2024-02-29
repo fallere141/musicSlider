@@ -92,7 +92,6 @@ struct playListView: View {
                             addingSheet.toggle()
                             playlists = musicData.shared.playlist.compactMap({$0})
                             customizedPlaylistID = musicData.shared.editablePlaylistID
-                            
                         }
                     }
                     // a transparent button just to make to sections looks the same

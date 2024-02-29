@@ -10,7 +10,6 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         TabView {
-            // Update to DetailView Later
             DetailView()
                 .tabItem {
                     Label("Slider", systemImage: "music.note") }

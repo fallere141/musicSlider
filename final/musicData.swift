@@ -16,6 +16,7 @@ import Foundation
     
     var deletedSongs: [Song.ID] = []
     var favoriteSongs: [Song.ID] = []
+
     
     private let songRequest = MusicLibraryRequest<Song>()
     
@@ -98,7 +99,7 @@ import Foundation
 
 
     
-    func fetechSong() async{
+    func fetechSong () async {
         
         let status = await MusicAuthorization.request()
         //         var result:MusicLibraryResponse<Song>
@@ -117,7 +118,7 @@ import Foundation
         }
     }
     
-    func fetechPlaylist()async{
+    func fetechPlaylist () async {
         let status = await MusicAuthorization.request()
         switch status{
         case.authorized:
@@ -136,7 +137,7 @@ import Foundation
     
     
     
-    func fetechRrecommand(){
+    func fetechRrecommand () {
         Task{
             let status = await MusicAuthorization.request()
             switch status{
@@ -156,7 +157,7 @@ import Foundation
         }
     }
     
-    func findPlaylistByID(id:Playlist.ID)async ->Playlist?{
+    func findPlaylistByID (id:Playlist.ID)async ->Playlist? {
         
         let status = await MusicAuthorization.request()
         //         var result:MusicLibraryResponse<Song>
@@ -188,7 +189,7 @@ import Foundation
 //        }
 //    }
     
-    func loadCustiomizedPlaylist(){
+    func loadCustiomizedPlaylist () {
 
         Task{
             if let data=UserDefaults.standard.data(forKey: "CustiomizedPlaylistTest"){
