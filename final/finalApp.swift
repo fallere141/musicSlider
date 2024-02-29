@@ -11,7 +11,7 @@ import SwiftUI
 struct finalApp: App {
     
     @State var musicdata = musicData.shared
-    
+    @StateObject var globalState = GlobalState()
     var body: some Scene {
         WindowGroup {
             ContentView()

@@ -27,13 +27,18 @@ import Foundation
     fileprivate init() {
         // `Task` allows async task to run in initializer `init()` function
         Task{
-            await fetechSong()
-            await fetechPlaylist()
-            fetechRrecommand()
-            loadCustiomizedPlaylist()
-            
-            await loadDeletedSongs()
+            await initialize()
         }
+    }
+    
+    func initialize() async {
+        await fetechSong()
+        await fetechPlaylist()
+        fetechRrecommand()
+        loadCustiomizedPlaylist()
+        
+        loadDeletedSongs()
+        loadFavoriteSongs()
     }
     
     
@@ -46,14 +51,36 @@ import Foundation
     func toggleFavorite(_ song: Song) {
         if let index = favoriteSongs.firstIndex(of: song.id) {
             favoriteSongs.remove(at: index)
+            saveFavoriteSongs()
             print(favoriteSongs)
         } else {
             favoriteSongs.append(song.id)
+            saveFavoriteSongs()
             print("favorite: ", favoriteSongs)
         }
     }
-
     
+    func saveFavoriteSongs() {
+        do {
+            let data = try JSONEncoder().encode(favoriteSongs)
+            UserDefaults.standard.set(data, forKey: "favoriteSongs")
+        } catch {
+            print("Failed to save favorite songs: \(error)")
+        }
+    }
+    
+    func loadFavoriteSongs() {
+        guard let data = UserDefaults.standard.data(forKey: "favoriteSongs") else { return }
+        do {
+            let decodedFavoriteSongs = try JSONDecoder().decode([Song.ID].self, from: data)
+            DispatchQueue.main.async {
+                self.favoriteSongs = decodedFavoriteSongs
+            }
+        } catch {
+            print("Failed to load favorite songs: \(error)")
+        }
+    }
+
     func markSongAsDeleted(_ song: Song) {
         guard !deletedSongs.contains(song.id) else { return }
         deletedSongs.append(song.id)
@@ -85,7 +112,7 @@ import Foundation
         }
     }
     
-    func loadDeletedSongs() async {
+    func loadDeletedSongs() {
         guard let data = UserDefaults.standard.data(forKey: "DeletedSongs") else { return }
         do {
             let decodedDeletedSongs = try JSONDecoder().decode([Song.ID].self, from: data)
@@ -134,8 +161,6 @@ import Foundation
             
         }
     }
-    
-    
     
     func fetechRrecommand () {
         Task{

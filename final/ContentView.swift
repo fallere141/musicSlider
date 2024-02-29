@@ -8,23 +8,33 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var globalState = GlobalState()
+
     var body: some View {
-        TabView {
-            DetailView()
+        TabView(selection: $globalState.selectedTab) {
+            DetailView(currentSongIndex: globalState.detailViewSongIndex)
                 .tabItem {
-                    Label("Slider", systemImage: "music.note") }
+                    Label("Slider", systemImage: "music.note")
+                }.tag(0)
+            
             playListView()
                 .tabItem {
-                    Label("Playlist", systemImage: "music.note.list") }
-            musicListView()
+                    Label("Playlist", systemImage: "music.note.list")
+                }.tag(1)
+            
+            musicListView(globalState: globalState)
                 .tabItem {
-                    Label("Music", systemImage: "music.house") }
+                    Label("Music", systemImage: "music.house")
+                }.tag(2)
+            
             dailyRecommandView()
                 .tabItem {
-                    Label("Daily for U", systemImage: "music.quarternote.3") }
-        }
+                    Label("Daily for U", systemImage: "music.quarternote.3")
+                }.tag(3)
+        }.environmentObject(globalState)
     }
 }
+
 
 #Preview {
     ContentView()

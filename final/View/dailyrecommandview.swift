@@ -47,7 +47,3 @@ struct dailyRecommandView: View {
 
     
 }
-
-#Preview {
-    musicListView()
-}
