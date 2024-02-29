@@ -41,6 +41,13 @@ struct DeleteView: View {
                             }
                         }
                     }
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button(role: .destructive) {
+                            musicData.shared.removeSongFromDeleted(songId: song.id)
+                        } label: {
+                            Label("Recover", systemImage: "square.and.arrow.up")
+                        }
+                    }
                 }
             }
             .navigationTitle("Deleted Songs")
@@ -62,6 +69,9 @@ struct DeleteView: View {
                 )
             }
         }.onAppear{
+            songs = musicData.shared.song.compactMap({$0})
+            self.deletedSongs = songs.filter { musicData.shared.deletedSongs.contains($0.id) }
+        }.onChange(of: musicData.shared.deletedSongs) { _, _ in
             songs = musicData.shared.song.compactMap({$0})
             self.deletedSongs = songs.filter { musicData.shared.deletedSongs.contains($0.id) }
         }

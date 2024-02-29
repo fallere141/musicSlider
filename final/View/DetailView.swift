@@ -12,7 +12,8 @@ import Combine
 struct DetailView: View {
     @State var songs: [Song] = []
     @State var playlists: [Playlist] = []
-    
+    @State var filteredSongs: [Song] = []
+
     @State private var deletedSongs: [Song.ID] = []
     @State private var favoriteSongs: [Song.ID] = []
     
@@ -33,7 +34,7 @@ struct DetailView: View {
                 VStack (alignment: .leading, spacing: 10) {
                     Spacer().frame(height: 70)
                     
-                    if songs.indices.contains(currentSongIndex), let artworkURL = songs[currentSongIndex].artwork?.url(width: Int(geometry.size.width * 0.8), height: Int(geometry.size.width * 0.8)) {
+                    if filteredSongs.indices.contains(currentSongIndex), let artworkURL = filteredSongs[currentSongIndex].artwork?.url(width: Int(geometry.size.width * 0.8), height: Int(geometry.size.width * 0.8)) {
                         ZStack(alignment: .center) {
                             Image("record")
                                 .resizable()
@@ -78,7 +79,7 @@ struct DetailView: View {
                                     }
                                 } else {
                                     Task {
-                                        await playMusic(songs[currentSongIndex])
+                                        await playMusic(filteredSongs[currentSongIndex])
                                     }
                                 }
                             }
@@ -97,7 +98,7 @@ struct DetailView: View {
                                         let isVerticalSwipe = !isHorizontalSwipe
                                         if isHorizontalSwipe {
                                             if gesture.translation.width < -50 {
-                                                if currentSongIndex < songs.count - 1 {
+                                                if currentSongIndex < filteredSongs.count - 1 {
                                                     currentSongIndex += 1
                                                 } else {
                                                     currentSongIndex = 0
@@ -106,20 +107,22 @@ struct DetailView: View {
                                                 if currentSongIndex > 0 {
                                                     currentSongIndex -= 1
                                                 } else {
-                                                    currentSongIndex = songs.count - 1
+                                                    currentSongIndex = filteredSongs.count - 1
                                                 }
                                             }
                                         }
                                         if isVerticalSwipe {
                                             if gesture.translation.height < -50 {
-                                                musicData.shared.markSongAsDeleted(songs[currentSongIndex])
+                                                musicData.shared.markSongAsDeleted(filteredSongs[currentSongIndex])
+                                                print(currentSongIndex)
                                                 if currentSongIndex > 0 {
                                                     currentSongIndex -= 1
                                                 } else {
-                                                    currentSongIndex = songs.count - 1
+                                                    currentSongIndex = filteredSongs.count - 2
                                                 }
+                                                print(currentSongIndex)
                                             } else if gesture.translation.height > 50 {
-                                                musicData.shared.toggleFavorite(songs[currentSongIndex])
+                                                musicData.shared.toggleFavorite(filteredSongs[currentSongIndex])
                                             }
                                         }
                                     }
@@ -131,7 +134,7 @@ struct DetailView: View {
                             if !isPlaying {
                                 Button(action: {
                                     Task {
-                                        await playMusic(songs[currentSongIndex])
+                                        await playMusic(filteredSongs[currentSongIndex])
                                     }
                                 }) {
                                     Image(systemName: "play.circle.fill")
@@ -159,8 +162,8 @@ struct DetailView: View {
                     
                     Spacer().frame(height: 20)
                     
-                    if songs.indices.contains(currentSongIndex) {
-                        let currentSong = songs[currentSongIndex]
+                    if filteredSongs.indices.contains(currentSongIndex) {
+                        let currentSong = filteredSongs[currentSongIndex]
                         Text(currentSong.title)
                             .font(.system(size: 28))
                             .bold()
@@ -206,7 +209,7 @@ struct DetailView: View {
                                         .animation(.easeInOut(duration: 0.2), value: imageScaleStates[playlist.id.rawValue, default: false])
                                         .onTapGesture {
                                             imageScaleStates[playlist.id.rawValue] = true
-                                            let song = songs[currentSongIndex]
+                                            let song = filteredSongs[currentSongIndex]
                                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                                                 imageScaleStates[playlist.id.rawValue] = false
                                             }
@@ -282,10 +285,25 @@ struct DetailView: View {
                 Alert(title: Text("Help"), message: Text("Slide left to switch\n Slide up to delete\n Slide down to like"), dismissButton: .default(Text("OK")))
             }
         }.onAppear{
-            songs = musicData.shared.song.compactMap({$0})
+            songs = musicData.shared.song.compactMap { $0 }
+            deletedSongs = musicData.shared.deletedSongs
+            filteredSongs = songs.filter { !deletedSongs.contains($0.id) }
             playlists = musicData.shared.playlist.compactMap({$0})
-            
-            self.deletedSongs = musicData.shared.deletedSongs
+
+            self.favoriteSongs = musicData.shared.favoriteSongs
+        }.onChange(of: musicData.shared.deletedSongs) { _, _ in
+            songs = musicData.shared.song.compactMap { $0 }
+            deletedSongs = musicData.shared.deletedSongs
+            filteredSongs = songs.filter { !deletedSongs.contains($0.id) }
+            playlists = musicData.shared.playlist.compactMap({$0})
+
+            self.favoriteSongs = musicData.shared.favoriteSongs
+        }.refreshable {
+            songs = musicData.shared.song.compactMap { $0 }
+            deletedSongs = musicData.shared.deletedSongs
+            filteredSongs = songs.filter { !deletedSongs.contains($0.id) }
+            playlists = musicData.shared.playlist.compactMap({$0})
+
             self.favoriteSongs = musicData.shared.favoriteSongs
         }
     }

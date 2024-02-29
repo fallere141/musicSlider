@@ -18,10 +18,13 @@ import MusicKit
 
 struct musicListView: View {
     @State var songs = [Song]()
+    @State var filteredSongs: [Song] = []
+    @State private var deletedSongs: [Song.ID] = []
+    
     var body: some View {
 
         NavigationView{
-            List(songs){
+            List(filteredSongs){
                 song in
                 HStack{
                     VStack(alignment: .leading) {
@@ -49,8 +52,17 @@ struct musicListView: View {
             }
             
         }.onAppear{
-
-            songs = musicData.shared.song.compactMap({$0})
+            songs = musicData.shared.song.compactMap { $0 }
+            deletedSongs = musicData.shared.deletedSongs
+            filteredSongs = songs.filter { !deletedSongs.contains($0.id) }
+        }.onChange(of: musicData.shared.deletedSongs) { _, _ in
+            songs = musicData.shared.song.compactMap { $0 }
+            deletedSongs = musicData.shared.deletedSongs
+            filteredSongs = songs.filter { !deletedSongs.contains($0.id) }
+        }.refreshable {
+            songs = musicData.shared.song.compactMap { $0 }
+            deletedSongs = musicData.shared.deletedSongs
+            filteredSongs = songs.filter { !deletedSongs.contains($0.id) }
         }
     }
     

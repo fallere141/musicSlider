@@ -30,12 +30,73 @@ import Foundation
             await fetechPlaylist()
             fetechRrecommand()
             loadCustiomizedPlaylist()
+            
+            await loadDeletedSongs()
         }
     }
     
     
     
     
+    
+
+    
+
+    func toggleFavorite(_ song: Song) {
+        if let index = favoriteSongs.firstIndex(of: song.id) {
+            favoriteSongs.remove(at: index)
+            print(favoriteSongs)
+        } else {
+            favoriteSongs.append(song.id)
+            print("favorite: ", favoriteSongs)
+        }
+    }
+
+    
+    func markSongAsDeleted(_ song: Song) {
+        guard !deletedSongs.contains(song.id) else { return }
+        deletedSongs.append(song.id)
+        saveDeletedSongs()
+        print("deleted: ", deletedSongs)
+    }
+    
+    func removeSongFromDeleted(songId: Song.ID) {
+        if let index = deletedSongs.firstIndex(of: songId) {
+            deletedSongs.remove(at: index)
+            saveDeletedSongs()
+        }
+    }
+    
+    func deleteListSongs() {
+//        songs.removeAll { song in
+//            deletedSongs.contains(song.id)
+//        }
+        deletedSongs.removeAll()
+        saveDeletedSongs()
+    }
+    
+    func saveDeletedSongs() {
+        do {
+            let data = try JSONEncoder().encode(deletedSongs)
+            UserDefaults.standard.set(data, forKey: "DeletedSongs")
+        } catch {
+            print("Failed to save deleted songs: \(error)")
+        }
+    }
+    
+    func loadDeletedSongs() async {
+        guard let data = UserDefaults.standard.data(forKey: "DeletedSongs") else { return }
+        do {
+            let decodedDeletedSongs = try JSONDecoder().decode([Song.ID].self, from: data)
+            DispatchQueue.main.async {
+                self.deletedSongs = decodedDeletedSongs
+            }
+        } catch {
+            print("Failed to load deleted songs: \(error)")
+        }
+    }
+
+
     
     func fetechSong() async{
         
@@ -56,33 +117,6 @@ import Foundation
         }
     }
     
-
-    func toggleFavorite(_ song: Song) {
-        if let index = favoriteSongs.firstIndex(of: song.id) {
-            favoriteSongs.remove(at: index)
-            print(favoriteSongs)
-        } else {
-            favoriteSongs.append(song.id)
-            print("favorite: ", favoriteSongs)
-        }
-    }
-
-    
-    func markSongAsDeleted(_ song: Song) {
-        guard !deletedSongs.contains(song.id) else { return }
-        deletedSongs.append(song.id)
-        print("deleted: ", deletedSongs)
-    }
-
-//    func deleteListSongs() {
-//        for songId in deletedSongs {
-//            if let index = song.firstIndex(where: { $0.id == songId }) {
-//                song.remove(at: index)
-//            }
-//        }
-//        deletedSongs.removeAll()
-//    }
-//    
     func fetechPlaylist()async{
         let status = await MusicAuthorization.request()
         switch status{
