@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var musicdata = musicData.shared
+    
     var body: some View {
         TabView {
             // Update to DetailView Later

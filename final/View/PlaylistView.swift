@@ -26,6 +26,7 @@ struct playListView: View {
     @State var userInput: String = ""
     @State var detail: String = ""
     @State var customizedPlaylistID:[Playlist.ID] = []
+    @State var showingHelpAlert = false
     //    var playlistsGet:[Playlist]
     //    {
     //        switch selection{
@@ -77,8 +78,26 @@ struct playListView: View {
                                 .foregroundColor(.gray)
                                 .clipShape(RoundedRectangle(cornerRadius: 5))
                         }
+                        //                        Button("delete"){
+                        //                            print(playlist)
+                        //                            musicData.shared.deletePlaylist(id: playlist.id)
+                        //                        }
                         
-                        
+                    }                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        if(musicData.shared.editablePlaylistID.contains(playlist.id)){
+                            Button(role: .destructive) {
+                                
+                                print(playlist)
+                                //                            musicData.shared.deletePlaylist(id: playlist.id)
+                                showingHelpAlert.toggle();
+                                
+                            } label: {
+                                Label("Recover", systemImage: "square.and.arrow.up")
+                            }
+                        }
+                    }
+                    .alert(isPresented: $showingHelpAlert) {
+                        Alert(title: Text("Cannot delete playlist in Music Slider"), message: Text("Apple Music only allow deleting playlist in their own application "), dismissButton: .default(Text("OK")))
                     }
                     
                 }

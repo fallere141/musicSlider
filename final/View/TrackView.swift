@@ -20,6 +20,16 @@ struct TrackView: View {
         }
     }
     
+    func deleteSongFromPlaylist(track:Track){
+        Task{
+            do{
+                try await MusicLibrary.shared.edit(playlist, items: trackList.filter({!($0.id==track.id)}))
+            }catch{
+                return
+            }
+        }
+    }
+    
     var body: some View {
         NavigationView{
             List(trackList){
@@ -44,6 +54,19 @@ struct TrackView: View {
                         ProgressView()
                     }
                 }
+//                (musicData.shared.editablePlaylistID.contains(playlist.id))
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        if(musicData.shared.editablePlaylistID.contains(playlist.id))
+                        {
+                            Button(role: .destructive) {
+                                print(song)
+                                deleteSongFromPlaylist(track: song)
+                            } label: {
+                                Label("Recover", systemImage: "square.and.arrow.up")
+                            }
+                        }
+                }
+//                }
             }
             
         }.onAppear{

@@ -190,7 +190,7 @@ struct DetailView: View {
                             .padding(.horizontal)
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
-                                ForEach( musicData.shared.playlist.compactMap({$0}), id: \.self) { playlist in
+                                ForEach(musicData.shared.playlist.filter({ musicData.shared.editablePlaylistID.contains($0.id)}).compactMap({$0}), id: \.self) { playlist in
                                     VStack(alignment: .center, spacing: 5) {
                                         AsyncImage(url: playlist.artwork?.url(width: 50, height: 50)) { image in
                                             image

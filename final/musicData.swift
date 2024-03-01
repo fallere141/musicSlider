@@ -182,11 +182,6 @@ import Foundation
         return nil
     }
     
-    //    func syncfindPlaylistByID(id:Playlist.ID)->Playlist{
-    //        Task{
-    //            return findPlaylistByID(id:id)
-    //        }
-    //    }
     
     func loadCustiomizedPlaylist(){
         
@@ -198,14 +193,6 @@ import Foundation
                 }catch{
                     return
                 }
-                
-                //
-                //        if let data=UserDefaults.standard.data(forKey: "CustiomizedPlaylistTest"){
-                //            do{
-                //                _ = try JSONDecoder().decode([Playlist.ID].self,from: data)
-                ////                let todolist = decodedItem.compactMap({findPlaylistByID(id:$0)})
-                //            }catch{
-                //                return
                 
             }
             await fetechPlaylist()
@@ -221,4 +208,35 @@ import Foundation
             return
         }
     }
+    
+    public func delete(url: URL) async throws -> MusicDataResponse {
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "DELETE"
+
+        let request = MusicDataRequest(urlRequest: urlRequest)
+        let response = try await request.response()
+        return response
+    }
+
+    public func deletePlaylist(id:Playlist.ID){
+        Task{
+//            MusicDataRequest.tokenProvider
+            let playlistURL = URL(string: "https://api.music.apple.com/v1/me/library/playlists/\(id.rawValue)")!
+
+
+            do {
+                let response = try await delete(url: playlistURL)
+                print(response)
+                print(response.data)
+//                print(response.description)
+                print(response.urlResponse)
+                //            let response = try await deleteRequest.response()
+                print("Playlist deleted successfully.")
+            } catch {
+                print("Failed to delete playlist:", error.localizedDescription)
+            }
+        }
+    }
+
+    
 }
