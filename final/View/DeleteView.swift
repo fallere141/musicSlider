@@ -13,6 +13,7 @@ struct DeleteView: View {
     @State var deletedSongs = [Song]()
     
     @State private var showingDeleteAlert = false
+    @State private var showingRecoverAllAlert = false
     
     var body: some View {
         NavigationView {
@@ -52,10 +53,19 @@ struct DeleteView: View {
             }
             .navigationTitle("Deleted Songs")
             .toolbar {
-                Button(action: {
-                    showingDeleteAlert = true
-                }) {
-                    Image(systemName: "trash")
+                ToolbarItemGroup(placement: .navigationBarLeading) {
+                    Button(action: {
+                        showingRecoverAllAlert = true
+                    }) {
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                }
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        showingDeleteAlert = true
+                    }) {
+                        Image(systemName: "trash")
+                    }
                 }
             }
             .alert(isPresented: $showingDeleteAlert) {
@@ -63,10 +73,18 @@ struct DeleteView: View {
                     title: Text("Confirm Delete"),
                     message: Text("Are you sure you want to permanently delete these songs?"),
                     primaryButton: .destructive(Text("Delete")) {
-//                        musicData.shared.deleteListSongs()
+                        musicData.shared.deleteListSongs()
                     },
                     secondaryButton: .cancel()
                 )
+            }
+            .alert("Confirm Recover", isPresented: $showingRecoverAllAlert, presenting: deletedSongs) { _ in
+                Button("Recover All", role: .destructive) {
+                    musicData.shared.recoverAllDeletedSongs()
+                }
+                Button("Cancel", role: .cancel) { }
+            } message: { _ in
+                Text("Are you sure you want to recover all deleted songs?")
             }
         }.onAppear{
             songs = musicData.shared.song.compactMap({$0})
@@ -77,7 +95,8 @@ struct DeleteView: View {
         }
     }
 
-    
+
+
 }
 
 #Preview {

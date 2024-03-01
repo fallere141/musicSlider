@@ -8,21 +8,43 @@
 import SwiftUI
 import MusicKit
 import Combine
+import MediaPlayer
 
 struct DetailView: View {
+    @EnvironmentObject var globalState: GlobalState
+    
     @State var songs: [Song] = []
     @State var playlists: [Playlist] = []
     @State var filteredSongs: [Song] = []
-
+    
     @State private var deletedSongs: [Song.ID] = []
+    @State private var deletedRecord: [Song.ID] = []
     @State private var favoriteSongs: [Song.ID] = []
     
     @State private var offset = CGSize.zero
     @State private var isRemoved = false
-    @State private var showingHelpAlert = false
     @State private var isPlaying = false
     @State private var rotationDegrees = 0.0
-    @State private var currentSongIndex = 0
+    @State var currentSongIndex: Int
+           
+    @State private var alertAddMessage = ""
+    @State private var showAlertType: AlertType? = nil
+    @State private var addingSheet = false
+    @State private var userInput = ""
+    @State private var detail = ""
+    
+    enum AlertType: Identifiable {
+        case help, error
+        
+        var id: Int {
+            switch self {
+            case .help:
+                return 0
+            case .error:
+                return 1
+            }
+        }
+    }
     
     @State private var imageScaleStates: [String: Bool] = [:]
 
@@ -32,7 +54,7 @@ struct DetailView: View {
         NavigationView {
             GeometryReader { geometry in
                 VStack (alignment: .leading, spacing: 10) {
-                    Spacer().frame(height: 70)
+                    Spacer().frame(height: 40)
                     
                     if filteredSongs.indices.contains(currentSongIndex), let artworkURL = filteredSongs[currentSongIndex].artwork?.url(width: Int(geometry.size.width * 0.8), height: Int(geometry.size.width * 0.8)) {
                         ZStack(alignment: .center) {
@@ -56,9 +78,9 @@ struct DetailView: View {
                                         .frame(width: geometry.size.width * 0.55, height: geometry.size.width * 0.55)
                                         .clipShape(Circle())
                                 case .failure:
-                                    Image(systemName: "photo")
-                                        .resizable()
-                                        .scaledToFit()
+                                    Circle()
+                                        .foregroundColor(.gray)
+                                        .frame(width: geometry.size.width * 0.55, height: geometry.size.width * 0.55)
                                 @unknown default:
                                     EmptyView()
                                 }
@@ -78,8 +100,9 @@ struct DetailView: View {
                                         await pauseMusic()
                                     }
                                 } else {
+                                    let currentSong = filteredSongs[currentSongIndex]
                                     Task {
-                                        await playMusic(filteredSongs[currentSongIndex])
+                                        await playMusic(currentSong)
                                     }
                                 }
                             }
@@ -133,8 +156,9 @@ struct DetailView: View {
                             
                             if !isPlaying {
                                 Button(action: {
+                                    let currentSong = filteredSongs[currentSongIndex]
                                     Task {
-                                        await playMusic(filteredSongs[currentSongIndex])
+                                        await playMusic(currentSong)
                                     }
                                 }) {
                                     Image(systemName: "play.circle.fill")
@@ -188,9 +212,22 @@ struct DetailView: View {
                         Text("Save to playlist ...")
                             .font(.subheadline)
                             .padding(.horizontal)
+                        
+                        var sortedPlaylists: [Playlist] {
+                            musicData.shared.playlist.compactMap({$0}).sorted { (playlist1, playlist2) -> Bool in
+                                let date1 = playlist1.lastModifiedDate ?? Date.distantPast
+                                let date2 = playlist2.lastModifiedDate ?? Date.distantPast
+                                return date1 > date2
+                            }
+                        }
+                        
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
+
                                 ForEach(musicData.shared.playlist.filter({ musicData.shared.editablePlaylistID.contains($0.id)}).compactMap({$0}), id: \.self) { playlist in
+
+//                                ForEach( sortedPlaylists, id: \.self) { playlist in
+
                                     VStack(alignment: .center, spacing: 5) {
                                         AsyncImage(url: playlist.artwork?.url(width: 50, height: 50)) { image in
                                             image
@@ -239,6 +276,7 @@ struct DetailView: View {
                                         .foregroundColor(.gray)
                                         .onTapGesture {
 //                                            addNewPlaylist()
+                                            addingSheet.toggle()
                                         }
                                     Spacer().frame(height: 5)
                                     Text("Add playlist")
@@ -247,17 +285,21 @@ struct DetailView: View {
                                         .frame(height: 40)
                                     
                                     Spacer()
+                                }.onTapGesture{
+//                                    addingSheet.toggle()
                                 }
                                 .frame(width: 60, height: 100, alignment: .top)
+                                
                             }
                             .padding(.horizontal)
                         }
                         .frame(height: 100)
+                        
                     }
                 }
             }
             .navigationBarItems(leading: Button(action: {
-                showingHelpAlert = true
+                showAlertType = .help
             }) {
                 Image(systemName: "info.circle")
                     .imageScale(.large)
@@ -281,30 +323,61 @@ struct DetailView: View {
                     }
                 }
             }
-            .alert(isPresented: $showingHelpAlert) {
-                Alert(title: Text("Help"), message: Text("Slide left to switch\n Slide up to delete\n Slide down to like"), dismissButton: .default(Text("OK")))
+            .alert(item: $showAlertType) { alertType in
+                switch alertType {
+                case .help:
+                    return Alert(title: Text("Help"), message: Text("Slide left to switch\n Slide up to delete\n Slide down to like"), dismissButton: .default(Text("OK")))
+                case .error:
+                    return Alert(title: Text("Error"), message: Text("An error occurred!"), dismissButton: .default(Text("OK")))
+                }
             }
+        }.sheet(isPresented: $addingSheet) {
+            FormView(addingSheet: $addingSheet,userInput: $userInput,detail:$detail)
         }.onAppear{
-            songs = musicData.shared.song.compactMap { $0 }
-            deletedSongs = musicData.shared.deletedSongs
-            filteredSongs = songs.filter { !deletedSongs.contains($0.id) }
-            playlists = musicData.shared.playlist.compactMap({$0})
-
+            self.songs = musicData.shared.song.compactMap { $0 }
+            self.deletedSongs = musicData.shared.deletedSongs
+            self.deletedRecord = musicData.shared.deletedRecord
+            self.filteredSongs = self.songs.filter { song in
+                !(self.deletedSongs.contains(song.id) || self.deletedRecord.contains(song.id))
+            }
             self.favoriteSongs = musicData.shared.favoriteSongs
+            self.playlists = musicData.shared.playlist.compactMap({$0})
         }.onChange(of: musicData.shared.deletedSongs) { _, _ in
-            songs = musicData.shared.song.compactMap { $0 }
-            deletedSongs = musicData.shared.deletedSongs
-            filteredSongs = songs.filter { !deletedSongs.contains($0.id) }
-            playlists = musicData.shared.playlist.compactMap({$0})
-
+            self.songs = musicData.shared.song.compactMap { $0 }
+            self.deletedSongs = musicData.shared.deletedSongs
+            self.deletedRecord = musicData.shared.deletedRecord
+            self.filteredSongs = self.songs.filter { song in
+                !(self.deletedSongs.contains(song.id) || self.deletedRecord.contains(song.id))
+            }
             self.favoriteSongs = musicData.shared.favoriteSongs
+            self.playlists = musicData.shared.playlist.compactMap({$0})
+        }.onChange(of: musicData.shared.song) { _, _ in
+            self.songs = musicData.shared.song.compactMap { $0 }
+            self.deletedSongs = musicData.shared.deletedSongs
+            self.deletedRecord = musicData.shared.deletedRecord
+            self.filteredSongs = self.songs.filter { song in
+                !(self.deletedSongs.contains(song.id) || self.deletedRecord.contains(song.id))
+            }
+            self.favoriteSongs = musicData.shared.favoriteSongs
+            self.playlists = musicData.shared.playlist.compactMap({$0})
+        }.onChange(of: musicData.shared.deletedRecord) { _, _ in
+            self.songs = musicData.shared.song.compactMap { $0 }
+            self.deletedSongs = musicData.shared.deletedSongs
+            self.deletedRecord = musicData.shared.deletedRecord
+            self.filteredSongs = self.songs.filter { song in
+                !(self.deletedSongs.contains(song.id) || self.deletedRecord.contains(song.id))
+            }
+            self.favoriteSongs = musicData.shared.favoriteSongs
+            self.playlists = musicData.shared.playlist.compactMap({$0})
         }.refreshable {
-            songs = musicData.shared.song.compactMap { $0 }
-            deletedSongs = musicData.shared.deletedSongs
-            filteredSongs = songs.filter { !deletedSongs.contains($0.id) }
-            playlists = musicData.shared.playlist.compactMap({$0})
-
+            self.songs = musicData.shared.song.compactMap { $0 }
+            self.deletedSongs = musicData.shared.deletedSongs
+            self.deletedRecord = musicData.shared.deletedRecord
+            self.filteredSongs = self.songs.filter { song in
+                !(self.deletedSongs.contains(song.id) || self.deletedRecord.contains(song.id))
+            }
             self.favoriteSongs = musicData.shared.favoriteSongs
+            self.playlists = musicData.shared.playlist.compactMap({$0})
         }
     }
     
@@ -329,7 +402,10 @@ struct DetailView: View {
             let _ = try await MusicLibrary.shared.add(song, to: playlist)
             print("Song \(song.title) was successfully added to the playlist \(playlist.name).")
         } catch {
-            debugPrint(error)
+            print("Failed to add song to playlist: \(error.localizedDescription)")
+
+            self.showAlertType = .error
+            self.alertAddMessage = "This playlist is Public"
         }
     }
 }

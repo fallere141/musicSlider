@@ -7,68 +7,84 @@
 
 import SwiftUI
 import MusicKit
-//struct Item:Identifiable,Codable{
-//    var id=UUID()
-//    let name:String
-//    let artest:String
-//    let imageURL:URL?
-//    
-//    
-//}
+
 
 struct musicListView: View {
     @State var songs = [Song]()
     @State var filteredSongs: [Song] = []
+    
     @State private var deletedSongs: [Song.ID] = []
+    @State private var deletedRecord: [Song.ID] = []
+    @State private var favoriteSongs: [Song.ID] = []
+    @ObservedObject var globalState: GlobalState
     
     var body: some View {
-
-        NavigationView{
-            List(filteredSongs){
-                song in
-                HStack{
-                    VStack(alignment: .leading) {
-                        Text(song.title)
-                            .font(.headline)
-                        Text(song.artistName)
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
+        NavigationView {
+            List {
+                ForEach(Array(filteredSongs.enumerated()), id: \.element.id) { index, song in
+                    HStack {
+                        VStack(alignment: .leading) {
+                            HStack {
+                                Text(song.title)
+                                    .font(.headline)
+                                Button(action: {
+                                    musicData.shared.toggleFavorite(song)
+                                    favoriteSongs = musicData.shared.favoriteSongs
+                                }) {
+                                    Image(systemName: favoriteSongs.contains(song.id) ? "heart.fill" : "heart")
+                                        .foregroundColor(.gray)
+                                }
+                            }
+                            Text(song.artistName)
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                        AsyncImage(url: song.artwork?.url(width: 60, height: 60)) { image in
+                            image
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 60, height: 60)
+                                .clipShape(RoundedRectangle(cornerRadius: 5))
+                        } placeholder: {
+                            ProgressView()
+                        }
+                    }.onTapGesture {
+                        print(index)
+                        globalState.detailViewSongIndex = index
+                        print(globalState.detailViewSongIndex)
+                        globalState.selectedTab = 0
                     }
-                    Spacer()
-                    AsyncImage(url: song.artwork?.url(width: 60, height: 60))
-                    {image in image
-                            .resizable()
-                            .frame(width: 60,height: 60,alignment: .center)
-                            .clipShape(RoundedRectangle(cornerRadius: 5))
-                    }
-                placeholder: {
-                    ProgressView()
-                }
-                        
-
-                }.onTapGesture {
-                    
                 }
             }
-            
-        }.onAppear{
+            .navigationTitle("Songs")
+        }
+        
+        .onAppear{
             songs = musicData.shared.song.compactMap { $0 }
             deletedSongs = musicData.shared.deletedSongs
-            filteredSongs = songs.filter { !deletedSongs.contains($0.id) }
+            favoriteSongs = musicData.shared.favoriteSongs
+            deletedRecord = musicData.shared.deletedRecord
+            filteredSongs = songs.filter { song in
+                !deletedSongs.contains(song.id) && !deletedRecord.contains(song.id)
+            } 
         }.onChange(of: musicData.shared.deletedSongs) { _, _ in
             songs = musicData.shared.song.compactMap { $0 }
             deletedSongs = musicData.shared.deletedSongs
-            filteredSongs = songs.filter { !deletedSongs.contains($0.id) }
+            favoriteSongs = musicData.shared.favoriteSongs
+            deletedRecord = musicData.shared.deletedRecord
+            filteredSongs = songs.filter { song in
+                !deletedSongs.contains(song.id) && !deletedRecord.contains(song.id)
+            }
         }.refreshable {
             songs = musicData.shared.song.compactMap { $0 }
             deletedSongs = musicData.shared.deletedSongs
-            filteredSongs = songs.filter { !deletedSongs.contains($0.id) }
+            favoriteSongs = musicData.shared.favoriteSongs
+            deletedRecord = musicData.shared.deletedRecord
+            filteredSongs = songs.filter { song in
+                !deletedSongs.contains(song.id) && !deletedRecord.contains(song.id)
+            }
         }
     }
-    
-    
 }
 
-#Preview {
-    musicListView()
-}

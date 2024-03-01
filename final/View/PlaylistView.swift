@@ -111,7 +111,6 @@ struct playListView: View {
                             addingSheet.toggle()
                             playlists = musicData.shared.playlist.compactMap({$0})
                             customizedPlaylistID = musicData.shared.editablePlaylistID
-                            
                         }
                     }
                     // a transparent button just to make to sections looks the same
@@ -131,43 +130,40 @@ struct playListView: View {
         }.refreshable {
             playlists = musicData.shared.playlist.compactMap({$0})
             customizedPlaylistID = musicData.shared.editablePlaylistID
+        }.onChange(of: musicData.shared.editablePlaylistID) { _, _ in
+            customizedPlaylistID = musicData.shared.editablePlaylistID
+        }.onChange(of: musicData.shared.playlist) { _, _ in
+            playlists = musicData.shared.playlist.compactMap({$0})
         }
     }
 }
 
 
 struct FormView: View {
-    
     @Binding var addingSheet: Bool
     @Binding var userInput: String
     @Binding var detail: String
+    @State private var isSaving: Bool = false
     
-    //    @State var selectColorFrom = ["red", "green", "yellow", "blue"]
     var body: some View {
         NavigationView {
             Form {
                 Section(header: Text("Add a organized playlist")) {
-                    TextField("title",text: $userInput)
-                    TextField("detail",text: $detail)
+                    TextField("Title", text: $userInput)
+                    TextField("Detail", text: $detail)
                 }
                 
                 Section {
-                    Button("Save") {
-                        Task{
-                            do{
-                                let response = try await MusicLibrary.shared.createPlaylist(name: userInput, description: detail)
-                                musicData.shared.editablePlaylistID.append(response.id)
-                                musicData.shared.saveCustiomizedPlaylist()
-                                musicData.shared.loadCustiomizedPlaylist()
-                                
-                            }
-                            catch{
-                                //                                musicData.shared.saveCustiomizedPlaylist()
-                            }
+                    HStack {
+                        Button("Save") {
+                            savePlaylist()
                         }
-                        //                        musicData.shared.saveCustiomizedPlaylist()
-                        //                        musicData.shared.loadCustiomizedPlaylist()
-                        addingSheet.toggle()
+                        .disabled(isSaving)
+                        
+                        if isSaving {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
+                        }
                     }
                 }
             }
@@ -181,7 +177,29 @@ struct FormView: View {
             }
         }
     }
+    
+    func savePlaylist() {
+        isSaving = true
+        Task {
+            do {
+                let response = try await MusicLibrary.shared.createPlaylist(name: userInput, description: detail)
+                musicData.shared.editablePlaylistID.append(response.id)
+                musicData.shared.saveCustiomizedPlaylist()
+                musicData.shared.loadCustiomizedPlaylist()
+                DispatchQueue.main.async {
+                    addingSheet.toggle()
+                    isSaving = false
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    isSaving = false
+                    print("Failed to create playlist: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
 }
+
 
 #Preview {
     playListView()
