@@ -25,7 +25,7 @@ struct DetailView: View {
     @State private var isRemoved = false
     @State private var isPlaying = false
     @State private var rotationDegrees = 0.0
-    @State var currentSongIndex: Int
+//    @State var currentSongIndex: Int
            
     @State private var alertAddMessage = ""
     @State private var showAlertType: AlertType? = nil
@@ -55,8 +55,9 @@ struct DetailView: View {
             GeometryReader { geometry in
                 VStack (alignment: .leading, spacing: 10) {
                     Spacer().frame(height: 40)
-                    
-                    if filteredSongs.indices.contains(currentSongIndex), let artworkURL = filteredSongs[currentSongIndex].artwork?.url(width: Int(geometry.size.width * 0.8), height: Int(geometry.size.width * 0.8)) {
+                   
+                    if filteredSongs.indices.contains(globalState.detailViewSongIndex), let artworkURL = filteredSongs[globalState.detailViewSongIndex].artwork?.url(width: Int(geometry.size.width * 0.8), height: Int(geometry.size.width * 0.8))
+                        {
                         ZStack(alignment: .center) {
                             Image("record")
                                 .resizable()
@@ -100,7 +101,7 @@ struct DetailView: View {
                                         await pauseMusic()
                                     }
                                 } else {
-                                    let currentSong = filteredSongs[currentSongIndex]
+                                    let currentSong = filteredSongs[globalState.detailViewSongIndex]
                                     Task {
                                         await playMusic(currentSong)
                                     }
@@ -121,31 +122,31 @@ struct DetailView: View {
                                         let isVerticalSwipe = !isHorizontalSwipe
                                         if isHorizontalSwipe {
                                             if gesture.translation.width < -50 {
-                                                if currentSongIndex < filteredSongs.count - 1 {
-                                                    currentSongIndex += 1
+                                                if globalState.detailViewSongIndex < filteredSongs.count - 1 {
+                                                    globalState.detailViewSongIndex += 1
                                                 } else {
-                                                    currentSongIndex = 0
+                                                    globalState.detailViewSongIndex = 0
                                                 }
                                             } else if gesture.translation.width > 50 {
-                                                if currentSongIndex > 0 {
-                                                    currentSongIndex -= 1
+                                                if globalState.detailViewSongIndex > 0 {
+                                                    globalState.detailViewSongIndex -= 1
                                                 } else {
-                                                    currentSongIndex = filteredSongs.count - 1
+                                                    globalState.detailViewSongIndex = filteredSongs.count - 1
                                                 }
                                             }
                                         }
                                         if isVerticalSwipe {
                                             if gesture.translation.height < -50 {
-                                                musicData.shared.markSongAsDeleted(filteredSongs[currentSongIndex])
-                                                print(currentSongIndex)
-                                                if currentSongIndex > 0 {
-                                                    currentSongIndex -= 1
+                                                musicData.shared.markSongAsDeleted(filteredSongs[globalState.detailViewSongIndex])
+                                                print(globalState.detailViewSongIndex)
+                                                if globalState.detailViewSongIndex > 0 {
+                                                    globalState.detailViewSongIndex -= 1
                                                 } else {
-                                                    currentSongIndex = filteredSongs.count - 2
+                                                    globalState.detailViewSongIndex = filteredSongs.count - 2
                                                 }
-                                                print(currentSongIndex)
+                                                print(globalState.detailViewSongIndex)
                                             } else if gesture.translation.height > 50 {
-                                                musicData.shared.toggleFavorite(filteredSongs[currentSongIndex])
+                                                musicData.shared.toggleFavorite(filteredSongs[globalState.detailViewSongIndex])
                                             }
                                         }
                                     }
@@ -156,7 +157,7 @@ struct DetailView: View {
                             
                             if !isPlaying {
                                 Button(action: {
-                                    let currentSong = filteredSongs[currentSongIndex]
+                                    let currentSong = filteredSongs[globalState.detailViewSongIndex]
                                     Task {
                                         await playMusic(currentSong)
                                     }
@@ -186,8 +187,8 @@ struct DetailView: View {
                     
                     Spacer().frame(height: 20)
                     
-                    if filteredSongs.indices.contains(currentSongIndex) {
-                        let currentSong = filteredSongs[currentSongIndex]
+                    if filteredSongs.indices.contains(globalState.detailViewSongIndex) {
+                        let currentSong = filteredSongs[globalState.detailViewSongIndex]
                         Text(currentSong.title)
                             .font(.system(size: 28))
                             .bold()
@@ -246,7 +247,7 @@ struct DetailView: View {
                                         .animation(.easeInOut(duration: 0.2), value: imageScaleStates[playlist.id.rawValue, default: false])
                                         .onTapGesture {
                                             imageScaleStates[playlist.id.rawValue] = true
-                                            let song = filteredSongs[currentSongIndex]
+                                            let song = filteredSongs[globalState.detailViewSongIndex]
                                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                                                 imageScaleStates[playlist.id.rawValue] = false
                                             }

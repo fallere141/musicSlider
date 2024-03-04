@@ -10,15 +10,15 @@ import SwiftUI
 struct ContentView: View {
 
     @State var musicdata = musicData.shared
-    @StateObject var globalState = GlobalState()
-
+    @EnvironmentObject var globalState: GlobalState
 
     var body: some View {
         TabView(selection: $globalState.selectedTab) {
-            DetailView(currentSongIndex: globalState.detailViewSongIndex)
+            DetailView()
                 .tabItem {
                     Label("Slider", systemImage: "music.note")
                 }.tag(0)
+                .environmentObject(globalState)
             
             playListView()
                 .tabItem {

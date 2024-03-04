@@ -9,17 +9,26 @@ import SwiftUI
 
 @main
 struct finalApp: App {
-    
-    @State var musicdata = musicData.shared
     @StateObject var globalState = GlobalState()
+    @State private var isLoading = true
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(globalState)
-                .task {
-                    await initializeData()
+            ZStack {
+                ContentView()
+                    .environmentObject(globalState)
+                    .task {
+                        await initializeData()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                            isLoading = false
+                        }
+                    }
+                
+                if isLoading {
+                    SplashView()
+                        .transition(.opacity) 
                 }
+            }
         }
     }
     
@@ -27,3 +36,4 @@ struct finalApp: App {
         await musicData.shared.initialize()
     }
 }
+

@@ -13,10 +13,11 @@
 		6A8FF4452B8E810600EA2606 /* TrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8FF4442B8E810600EA2606 /* TrackView.swift */; };
 		6AB8084E2B89C009008CE9D8 /* finalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB8084D2B89C009008CE9D8 /* finalApp.swift */; };
 		6AB808502B89C009008CE9D8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB8084F2B89C009008CE9D8 /* ContentView.swift */; };
-		6AB808522B89C00A008CE9D8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6AB808512B89C00A008CE9D8 /* Assets.xcassets */; };
 		6AB808552B89C00A008CE9D8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6AB808542B89C00A008CE9D8 /* Preview Assets.xcassets */; };
 		6AB808792B89C398008CE9D8 /* musicListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB808782B89C398008CE9D8 /* musicListView.swift */; };
 		CD07FDF72B8D901D008BC75E /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07FDF62B8D901D008BC75E /* DetailView.swift */; };
+		CDD8D3922B955D17000E9854 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD8D3912B955D17000E9854 /* SplashScreenView.swift */; };
+		CDD8D3942B9565F9000E9854 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDD8D3932B9565F9000E9854 /* Assets.xcassets */; };
 		CDD931572B8EF93D00E98E99 /* DeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD931562B8EF93D00E98E99 /* DeleteView.swift */; };
 		CDF1D2442B902F8D004BD093 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF1D2432B902F8D004BD093 /* State.swift */; };
 /* End PBXBuildFile section */
@@ -47,13 +48,14 @@
 		6AB8084A2B89C009008CE9D8 /* final.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = final.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6AB8084D2B89C009008CE9D8 /* finalApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = finalApp.swift; sourceTree = "<group>"; };
 		6AB8084F2B89C009008CE9D8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		6AB808512B89C00A008CE9D8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6AB808542B89C00A008CE9D8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		6AB8085A2B89C00A008CE9D8 /* finalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = finalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6AB808642B89C00A008CE9D8 /* finalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = finalUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6AB808772B89C0F3008CE9D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		6AB808782B89C398008CE9D8 /* musicListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = musicListView.swift; sourceTree = "<group>"; };
 		CD07FDF62B8D901D008BC75E /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		CDD8D3912B955D17000E9854 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
+		CDD8D3932B9565F9000E9854 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "../../../../../../../Downloads/mpcs51030-2024-winter-assignment-final-project-musicslider-8531bed3630699819b90dd05963c6c6f2dfe2077/final/Assets.xcassets"; sourceTree = "<group>"; };
 		CDD931562B8EF93D00E98E99 /* DeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteView.swift; sourceTree = "<group>"; };
 		CDF1D2432B902F8D004BD093 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -111,7 +113,8 @@
 				6A1AD60A2B8D456500EE8E6F /* musicData.swift */,
 				CDF1D2432B902F8D004BD093 /* State.swift */,
 				6AB8084D2B89C009008CE9D8 /* finalApp.swift */,
-				6AB808512B89C00A008CE9D8 /* Assets.xcassets */,
+				CDD8D3912B955D17000E9854 /* SplashScreenView.swift */,
+				CDD8D3932B9565F9000E9854 /* Assets.xcassets */,
 				6AB808532B89C00A008CE9D8 /* Preview Content */,
 			);
 			path = final;
@@ -242,8 +245,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDD8D3942B9565F9000E9854 /* Assets.xcassets in Resources */,
 				6AB808552B89C00A008CE9D8 /* Preview Assets.xcassets in Resources */,
-				6AB808522B89C00A008CE9D8 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,6 +275,7 @@
 				6AB808502B89C009008CE9D8 /* ContentView.swift in Sources */,
 				6AB808792B89C398008CE9D8 /* musicListView.swift in Sources */,
 				CDF1D2442B902F8D004BD093 /* State.swift in Sources */,
+				CDD8D3922B955D17000E9854 /* SplashScreenView.swift in Sources */,
 				6A8FF4452B8E810600EA2606 /* TrackView.swift in Sources */,
 				6A1C33482B8D285500F7575F /* PlaylistView.swift in Sources */,
 				CD07FDF72B8D901D008BC75E /* DetailView.swift in Sources */,
@@ -447,7 +451,6 @@
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "We want to use your apple music data";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -480,7 +483,6 @@
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "We want to use your apple music data";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
