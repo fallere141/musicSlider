@@ -8,6 +8,7 @@
 import SwiftUI
 import MusicKit
 
+// State variables to manage songs, deleted songs, and alert visibility
 struct DeleteView: View {
     @State var songs: [Song] = []
     @State var deletedSongs = [Song]()

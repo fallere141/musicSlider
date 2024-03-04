@@ -13,6 +13,7 @@ enum DataLoadingState {
     case failed(Error)
 }
 
+/// Manages the music data including songs, playlists, recommendations, and user customizations such as favorite songs, deleted songs, and deleted records.
 //@Observable
 @Observable class musicData{
     var song:MusicItemCollection<Song> = []
@@ -40,6 +41,7 @@ enum DataLoadingState {
         }
     }
     
+    /// Manages the music data including songs, playlists, recommendations, and user customizations such as favorite songs, deleted songs, and deleted records.
     func initialize() async {
         await fetchSong()
         await fetchPlaylist()
@@ -50,14 +52,8 @@ enum DataLoadingState {
         loadDeletedRecord()
         loadFavoriteSongs()
     }
-    
-    
-    
-    
-    
-    
-    
-    
+
+    /// Toggles the favorite status of a song. If the song is already in the favorites list, it removes it; otherwise, it adds the song to the list.
     func toggleFavorite(_ song: Song) {
         if let index = favoriteSongs.firstIndex(of: song.id) {
             favoriteSongs.remove(at: index)
@@ -70,7 +66,7 @@ enum DataLoadingState {
         }
     }
 
-    
+    /// Saves the current list of favorite songs to UserDefaults.
     func saveFavoriteSongs() {
         do {
             let data = try JSONEncoder().encode(favoriteSongs)
@@ -80,6 +76,7 @@ enum DataLoadingState {
         }
     }
     
+    /// Loads the list of favorite songs from UserDefaults.
     func loadFavoriteSongs() {
         guard let data = UserDefaults.standard.data(forKey: "favoriteSongs") else { return }
         do {
@@ -91,7 +88,8 @@ enum DataLoadingState {
             print("Failed to load favorite songs: \(error)")
         }
     }
-
+    
+    /// Marks a song as deleted by adding its ID to the list of deleted songs and saves this list.
     func markSongAsDeleted(_ song: Song) {
         guard !deletedSongs.contains(song.id) else { return }
         deletedSongs.append(song.id)
@@ -99,6 +97,7 @@ enum DataLoadingState {
         print("deleted: ", deletedSongs)
     }
     
+    /// Removes a song from the list of deleted songs.
     func removeSongFromDeleted(songId: Song.ID) {
         if let index = deletedSongs.firstIndex(of: songId) {
             deletedSongs.remove(at: index)
@@ -106,21 +105,21 @@ enum DataLoadingState {
         }
     }
     
+    /// Moves all currently deleted songs to a permanent deleted record and clears the list of deleted songs.
     func deleteListSongs() {
-
         deletedRecord.append(contentsOf: deletedSongs)
         deletedSongs.removeAll()
         saveDeletedSongs()
         saveDeletedRecord()
     }
     
-    
+    /// Recovers all songs marked as deleted by clearing the list of deleted songs.
     func recoverAllDeletedSongs() {
-
         deletedSongs.removeAll()
         saveDeletedSongs()
     }
     
+    /// Saves the list of deleted songs to UserDefaults.
     func saveDeletedSongs() {
         do {
             let data = try JSONEncoder().encode(deletedSongs)
@@ -130,6 +129,7 @@ enum DataLoadingState {
         }
     }
     
+    /// Loads the permanent record of deleted songs from UserDefaults.
     func loadDeletedSongs() {
         guard let data = UserDefaults.standard.data(forKey: "DeletedSongs") else { return }
         do {
@@ -142,7 +142,7 @@ enum DataLoadingState {
         }
     }
     
-
+    /// Saves the permanent record of deleted songs to UserDefaults.
     func saveDeletedRecord() {
         do {
             let data = try JSONEncoder().encode(deletedRecord)
@@ -152,6 +152,7 @@ enum DataLoadingState {
         }
     }
     
+    /// Loads the permanent record of deleted songs from UserDefaults.
     func loadDeletedRecord() {
         guard let data = UserDefaults.standard.data(forKey: "DeletedRecord") else { return }
         do {
@@ -163,10 +164,8 @@ enum DataLoadingState {
             print("Failed to load deleted record: \(error)")
         }
     }
-
-
-
     
+    /// Fetches the latest collection of songs from the Music Library.
     func fetchSong () async {
         
         let status = await MusicAuthorization.request()
@@ -186,6 +185,7 @@ enum DataLoadingState {
         }
     }
     
+    /// Fetches the latest collection of playlists from the Music Library.
     func fetchPlaylist () async {
         let status = await MusicAuthorization.request()
         switch status{
@@ -203,6 +203,7 @@ enum DataLoadingState {
         }
     }
     
+    /// Fetches personal recommendations, including stations, asynchronously.
     func fetchRrecommand () {
         Task{
             let status = await MusicAuthorization.request()
@@ -224,7 +225,6 @@ enum DataLoadingState {
     }
     
     func findPlaylistByID (id:Playlist.ID)async ->Playlist? {
-        
         let status = await MusicAuthorization.request()
         //         var result:MusicLibraryResponse<Song>
         switch status{
@@ -249,11 +249,8 @@ enum DataLoadingState {
         return nil
     }
     
-    
-
+    /// Loads the IDs of customizable playlists from UserDefaults.
     func loadCustiomizedPlaylist(){
-        
-
         Task{
             if let data=UserDefaults.standard.data(forKey: "CustiomizedPlaylistTest"){
                 do{
@@ -269,6 +266,7 @@ enum DataLoadingState {
         }
     }
     
+    /// Saves the IDs of customizable playlists to UserDefaults.
     func saveCustiomizedPlaylist(){
         do{
             let data = try JSONEncoder().encode(editablePlaylistID)
@@ -287,6 +285,7 @@ enum DataLoadingState {
         return response
     }
 
+    /// Deletes a playlist by its ID. This method demonstrates an asynchronous request to delete a playlist.
     public func deletePlaylist(id:Playlist.ID){
         Task{
 //            MusicDataRequest.tokenProvider

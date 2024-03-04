@@ -9,38 +9,17 @@
 import SwiftUI
 import MusicKit
 
-
-//struct playListItem:Identifiable,Codable{
-//    var id=UUID()
-//    let name:String
-//    let playlist:Playlist
-//
-//
-//
-//}
-
+//  This view displays a list of playlists. Users can filter playlists by "All" or "Customized".
+//  Users can also add new playlists or recover deleted playlists through swipe actions.
 struct playListView: View {
-    //    @State var playlists=[Playlist]()
     @State private var selection = "All"
     @State var addingSheet = false
     @State var userInput: String = ""
     @State var detail: String = ""
     @State var customizedPlaylistID:[Playlist.ID] = []
     @State var showingHelpAlert = false
-    //    var playlistsGet:[Playlist]
-    //    {
-    //        switch selection{
-    //        case "All":
-    //            return musicData.shared.playlist.compactMap({$0})
-    //        default:
-    //            return musicData.shared.playlist.filter({ musicData.shared.editablePlaylistID.contains($0.id)}).compactMap({$0})
-    //        }
-    //    }
     
     @State var playlists:[Playlist] = []
-    
-    
-    
     
     var body: some View {
         
@@ -61,7 +40,6 @@ struct playListView: View {
                     
                     HStack{
                         Text(playlist.name)
-                        //                    Text(playlist.id.rawValue)
                         Spacer()
                         AsyncImage(url: playlist.artwork?.url(width: 50, height: 50))
                         {
@@ -78,17 +56,12 @@ struct playListView: View {
                                 .foregroundColor(.gray)
                                 .clipShape(RoundedRectangle(cornerRadius: 5))
                         }
-                        //                        Button("delete"){
-                        //                            print(playlist)
-                        //                            musicData.shared.deletePlaylist(id: playlist.id)
-                        //                        }
                         
                     }                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                         if(musicData.shared.editablePlaylistID.contains(playlist.id)){
                             Button(role: .destructive) {
                                 
                                 print(playlist)
-                                //                            musicData.shared.deletePlaylist(id: playlist.id)
                                 showingHelpAlert.toggle();
                                 
                             } label: {
@@ -113,7 +86,6 @@ struct playListView: View {
                             customizedPlaylistID = musicData.shared.editablePlaylistID
                         }
                     }
-                    // a transparent button just to make to sections looks the same
                     else{
                         Button("add playlist") {
                             
@@ -138,7 +110,8 @@ struct playListView: View {
     }
 }
 
-
+// This view presents a form allowing users to add a new organized playlist.
+// Users can enter a title and details for the playlist before saving.
 struct FormView: View {
     @Binding var addingSheet: Bool
     @Binding var userInput: String
@@ -178,6 +151,8 @@ struct FormView: View {
         }
     }
     
+    // Saves the new playlist using user input for title and details.
+    // Updates the list of editable playlists and refreshes data.
     func savePlaylist() {
         isSaving = true
         Task {

@@ -8,10 +8,12 @@
 import SwiftUI
 import MusicKit
 
+/// `TrackView` displays a list of tracks from a given playlist.
 struct TrackView: View {
     @State var playlist: Playlist
     @State var trackList:[Track] = []
     
+    /// Fetches tracks from the specified playlist and updates the `trackList` state.
     func showSongFromPlaylist(){
         Task{
             let detailedPlaylist = try await playlist.with([.tracks])
@@ -20,6 +22,7 @@ struct TrackView: View {
         }
     }
     
+    /// Deletes a specified track from the playlist.
     func deleteSongFromPlaylist(track:Track){
         Task{
             do{
@@ -54,7 +57,6 @@ struct TrackView: View {
                         ProgressView()
                     }
                 }
-//                (musicData.shared.editablePlaylistID.contains(playlist.id))
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                         if(musicData.shared.editablePlaylistID.contains(playlist.id))
                         {
@@ -66,7 +68,6 @@ struct TrackView: View {
                             }
                         }
                 }
-//                }
             }
             
         }.onAppear{

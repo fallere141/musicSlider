@@ -10,6 +10,8 @@ import MusicKit
 import Combine
 import MediaPlayer
 
+/// `DetailView` presents detailed information about a song, including its artwork, title, and artist name.
+/// Users can interact with the view to play music, add songs to playlists, and navigate through the song list.
 struct DetailView: View {
     @EnvironmentObject var globalState: GlobalState
     
@@ -25,7 +27,6 @@ struct DetailView: View {
     @State private var isRemoved = false
     @State private var isPlaying = false
     @State private var rotationDegrees = 0.0
-//    @State var currentSongIndex: Int
            
     @State private var alertAddMessage = ""
     @State private var showAlertType: AlertType? = nil
@@ -226,7 +227,7 @@ struct DetailView: View {
                             HStack {
 
                                 ForEach(musicData.shared.playlist.filter({ musicData.shared.editablePlaylistID.contains($0.id)}).compactMap({$0}), id: \.self) { playlist in
-
+//                              Use this line if you want to display all playlists in the detailedView
 //                                ForEach( sortedPlaylists, id: \.self) { playlist in
 
                                     VStack(alignment: .center, spacing: 5) {
@@ -382,6 +383,8 @@ struct DetailView: View {
         }
     }
     
+    /// Plays the selected song using `ApplicationMusicPlayer`.
+    /// - Parameter song: The `Song` object to be played.
     func playMusic(_ song: Song) async {
         do {
             ApplicationMusicPlayer.shared.queue = [song]
@@ -393,11 +396,13 @@ struct DetailView: View {
         }
     }
     
+    /// Pauses the currently playing song.
     func pauseMusic() async {
             ApplicationMusicPlayer.shared.pause()
             isPlaying = false
     }
     
+    /// Adds a song to a specified playlist.
     func addToPlaylist(song: Song, playlist: Playlist) async {
         do {
             let _ = try await MusicLibrary.shared.add(song, to: playlist)

@@ -8,7 +8,9 @@
 import SwiftUI
 import MusicKit
 
-
+//  `musicListView` displays a list of songs, allowing users to mark songs as favorites,
+//  and to navigate to a detailed view for each song. It supports dynamic filtering to exclude
+//  deleted songs and integrates with a shared global state for navigation and favorite management.
 struct musicListView: View {
     @State var songs = [Song]()
     @State var filteredSongs: [Song] = []
