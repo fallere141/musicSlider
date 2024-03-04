@@ -16,8 +16,8 @@
 		6AB808552B89C00A008CE9D8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6AB808542B89C00A008CE9D8 /* Preview Assets.xcassets */; };
 		6AB808792B89C398008CE9D8 /* musicListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB808782B89C398008CE9D8 /* musicListView.swift */; };
 		CD07FDF72B8D901D008BC75E /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD07FDF62B8D901D008BC75E /* DetailView.swift */; };
+		CDCE1BE12B956DA5001BE5B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDCE1BE02B956DA5001BE5B8 /* Assets.xcassets */; };
 		CDD8D3922B955D17000E9854 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD8D3912B955D17000E9854 /* SplashScreenView.swift */; };
-		CDD8D3942B9565F9000E9854 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDD8D3932B9565F9000E9854 /* Assets.xcassets */; };
 		CDD931572B8EF93D00E98E99 /* DeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD931562B8EF93D00E98E99 /* DeleteView.swift */; };
 		CDF1D2442B902F8D004BD093 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF1D2432B902F8D004BD093 /* State.swift */; };
 /* End PBXBuildFile section */
@@ -54,8 +54,8 @@
 		6AB808772B89C0F3008CE9D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		6AB808782B89C398008CE9D8 /* musicListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = musicListView.swift; sourceTree = "<group>"; };
 		CD07FDF62B8D901D008BC75E /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		CDCE1BE02B956DA5001BE5B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "../../../../../../../Downloads/mpcs51030-2024-winter-assignment-final-project-musicslider-8531bed3630699819b90dd05963c6c6f2dfe2077/final/Assets.xcassets"; sourceTree = "<group>"; };
 		CDD8D3912B955D17000E9854 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
-		CDD8D3932B9565F9000E9854 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "../../../../../../../Downloads/mpcs51030-2024-winter-assignment-final-project-musicslider-8531bed3630699819b90dd05963c6c6f2dfe2077/final/Assets.xcassets"; sourceTree = "<group>"; };
 		CDD931562B8EF93D00E98E99 /* DeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteView.swift; sourceTree = "<group>"; };
 		CDF1D2432B902F8D004BD093 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -114,7 +114,7 @@
 				CDF1D2432B902F8D004BD093 /* State.swift */,
 				6AB8084D2B89C009008CE9D8 /* finalApp.swift */,
 				CDD8D3912B955D17000E9854 /* SplashScreenView.swift */,
-				CDD8D3932B9565F9000E9854 /* Assets.xcassets */,
+				CDCE1BE02B956DA5001BE5B8 /* Assets.xcassets */,
 				6AB808532B89C00A008CE9D8 /* Preview Content */,
 			);
 			path = final;
@@ -245,7 +245,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDD8D3942B9565F9000E9854 /* Assets.xcassets in Resources */,
+				CDCE1BE12B956DA5001BE5B8 /* Assets.xcassets in Resources */,
 				6AB808552B89C00A008CE9D8 /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
