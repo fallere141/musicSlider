@@ -15,13 +15,24 @@ struct SplashView: View {
             Color("LaunchColor")
                 .edgesIgnoringSafeArea(.all)
             
-            Image("Launch")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 200, height: 200)
-                .scaleEffect(startAnimation ? 3 : 1)
-                .opacity(startAnimation ? 0 : 1)
-                .animation(.easeIn(duration: 1.5), value: startAnimation)
+            VStack{
+                Spacer().frame(height: 220)
+                Image("Launch")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 200)
+                    .scaleEffect(startAnimation ? 3 : 1)
+                    .opacity(startAnimation ? 0 : 1)
+                    .animation(.easeIn(duration: 1.5), value: startAnimation)
+                
+                Spacer().frame(height: 260)
+                
+                Text("@Copyright: Yun Liu and Zhengxun Zhang")
+                    .font(.system(size: 12))
+                    .foregroundColor(.gray)
+                    .opacity(startAnimation ? 0 : 1)
+                    .animation(.easeIn(duration: 1.5), value: startAnimation)
+            }
         }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.3) {
