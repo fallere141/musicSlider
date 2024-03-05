@@ -65,7 +65,7 @@ struct playListView: View {
                                 showingHelpAlert.toggle();
                                 
                             } label: {
-                                Label("Recover", systemImage: "square.and.arrow.up")
+                                Label("Recover", systemImage: "trash")
                             }
                         }
                     }
