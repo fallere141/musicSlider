@@ -11,6 +11,7 @@ struct ContentView: View {
 
     @State var musicdata = musicData.shared
     @EnvironmentObject var globalState: GlobalState
+    @State private var showRateAppAlert = false
 
     var body: some View {
         TabView(selection: $globalState.selectedTab) {
@@ -34,11 +35,24 @@ struct ContentView: View {
                 .tabItem {
                     Label("Daily for U", systemImage: "music.quarternote.3")
                 }.tag(3)
-        }.environmentObject(globalState)
+        }
+        .environmentObject(globalState)
+        .onAppear {
+            globalState.appLaunchCount += 1
+            
+            if globalState.appLaunchCount == 3 {
+                showRateAppAlert = true
+            }
+        }
+        .alert(isPresented: $showRateAppAlert) {
+            Alert(
+                title: Text("Rate Us"),
+                message: Text("If you enjoy using the app, please take a moment to rate it in the App Store."),
+                primaryButton: .default(Text("Rate")) {
+                    print("User chose to rate the app")
+                },
+                secondaryButton: .cancel()
+            )
+        }
     }
-}
-
-
-#Preview {
-    ContentView()
 }

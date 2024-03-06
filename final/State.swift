@@ -12,4 +12,9 @@ class GlobalState: ObservableObject {
     @Published var selectedTab: Int = 0
     @Published var navigateToDetailView: Bool = false
     @Published var detailViewSongIndex: Int = 0
+    @Published var appLaunchCount: Int = UserDefaults.standard.integer(forKey: "appLaunchCount") {
+            didSet {
+                UserDefaults.standard.set(self.appLaunchCount, forKey: "appLaunchCount")
+            }
+        }
 }
