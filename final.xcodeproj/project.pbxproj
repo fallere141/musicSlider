@@ -10,6 +10,7 @@
 		6A1AD6092B8D3F7F00EE8E6F /* dailyrecommandview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1AD6082B8D3F7F00EE8E6F /* dailyrecommandview.swift */; };
 		6A1AD60B2B8D456500EE8E6F /* musicData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1AD60A2B8D456500EE8E6F /* musicData.swift */; };
 		6A1C33482B8D285500F7575F /* PlaylistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1C33472B8D285500F7575F /* PlaylistView.swift */; };
+		6A74C9832B980B0C0012EE97 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6A74C9822B980B0C0012EE97 /* Settings.bundle */; };
 		6A8FF4452B8E810600EA2606 /* TrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8FF4442B8E810600EA2606 /* TrackView.swift */; };
 		6AB8084E2B89C009008CE9D8 /* finalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB8084D2B89C009008CE9D8 /* finalApp.swift */; };
 		6AB808502B89C009008CE9D8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB8084F2B89C009008CE9D8 /* ContentView.swift */; };
@@ -43,6 +44,7 @@
 		6A1AD6082B8D3F7F00EE8E6F /* dailyrecommandview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dailyrecommandview.swift; sourceTree = "<group>"; };
 		6A1AD60A2B8D456500EE8E6F /* musicData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = musicData.swift; sourceTree = "<group>"; };
 		6A1C33472B8D285500F7575F /* PlaylistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistView.swift; sourceTree = "<group>"; };
+		6A74C9822B980B0C0012EE97 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		6A8FF4442B8E810600EA2606 /* TrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackView.swift; sourceTree = "<group>"; };
 		6AB79A802B8D629D00C11BEB /* final.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = final.entitlements; sourceTree = "<group>"; };
 		6AB8084A2B89C009008CE9D8 /* final.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = final.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,6 +90,7 @@
 		6AB808412B89C009008CE9D8 = {
 			isa = PBXGroup;
 			children = (
+				6A74C9822B980B0C0012EE97 /* Settings.bundle */,
 				6AB8084C2B89C009008CE9D8 /* final */,
 				6AB8084B2B89C009008CE9D8 /* Products */,
 			);
@@ -246,6 +249,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDB7E8902B964B8200122C63 /* Assets.xcassets in Resources */,
+				6A74C9832B980B0C0012EE97 /* Settings.bundle in Resources */,
 				6AB808552B89C00A008CE9D8 /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

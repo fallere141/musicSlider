@@ -27,7 +27,7 @@ struct SplashView: View {
                 
                 Spacer().frame(height: 260)
                 
-                Text("@Copyright: Yun Liu and Zhengxun Zhang")
+                Text("@Copyright: Yun Liu and Zhenxun Zhang")
                     .font(.system(size: 12))
                     .foregroundColor(.gray)
                     .opacity(startAnimation ? 0 : 1)

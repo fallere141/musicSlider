@@ -11,7 +11,7 @@ struct ContentView: View {
 
     @State var musicdata = musicData.shared
     @EnvironmentObject var globalState: GlobalState
-
+    
     var body: some View {
         TabView(selection: $globalState.selectedTab) {
             DetailView()

@@ -12,6 +12,15 @@ struct finalApp: App {
     @StateObject var globalState = GlobalState()
     @State private var isLoading = true
     
+    init() {
+        
+        let hasLaunchedBefore = UserDefaults.standard.bool(forKey: "hasLaunchedBefore")
+        if !hasLaunchedBefore {
+            UserDefaults.standard.set(Date(), forKey: "Initial Launch")
+            UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
+        }
+    }
+    
     var body: some Scene {
         WindowGroup {
             ZStack {

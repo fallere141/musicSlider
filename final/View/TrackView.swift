@@ -18,6 +18,7 @@ struct TrackView: View {
     @State var filteredSongs: [Song] = []
     @State var songs = [Song]()
     @State private var favoriteSongs: [Song.ID] = []
+    @State var showingHelpAlert = false
     
     /// Fetches tracks from the specified playlist and updates the `trackList` state.
     func showSongFromPlaylist(){
@@ -87,7 +88,10 @@ struct TrackView: View {
                             print(globalState.detailViewSongIndex)
                             globalState.selectedTab = 0
                         }
-                        else{}
+                        else{
+                            showingHelpAlert.toggle()
+                            
+                        }
 
                 }
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
@@ -97,10 +101,13 @@ struct TrackView: View {
                                 print(song)
                                 deleteSongFromPlaylist(track: song)
                             } label: {
-                                Label("Recover", systemImage: "square.and.arrow.up")
+                                Label("Recover", systemImage: "trash")
                             }
                         }
                 }
+                    .alert(isPresented: $showingHelpAlert) {
+                        Alert(title: Text("This song is already deleted"), message: Text("If you want to listen this song, please remove it from deleted songs."), dismissButton: .default(Text("OK")))
+                    }
             }
             
         }      
