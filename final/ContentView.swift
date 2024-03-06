@@ -32,10 +32,10 @@ struct ContentView: View {
                     Label("Music Library", systemImage: "music.house")
                 }.tag(2)
             
-            dailyRecommandView()
-                .tabItem {
-                    Label("Daily for U", systemImage: "music.quarternote.3")
-                }.tag(3)
+//            dailyRecommandView()
+//                .tabItem {
+//                    Label("Daily for U", systemImage: "music.quarternote.3")
+//                }.tag(3)
         }
         .environmentObject(globalState)
         .onAppear {
