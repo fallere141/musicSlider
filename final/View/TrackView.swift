@@ -12,6 +12,12 @@ import MusicKit
 struct TrackView: View {
     @State var playlist: Playlist
     @State var trackList:[Track] = []
+    @ObservedObject var globalState: GlobalState
+    @State private var deletedSongs: [Song.ID] = []
+    @State private var deletedRecord: [Song.ID] = []
+    @State var filteredSongs: [Song] = []
+    @State var songs = [Song]()
+    @State private var favoriteSongs: [Song.ID] = []
     
     /// Fetches tracks from the specified playlist and updates the `trackList` state.
     func showSongFromPlaylist(){
@@ -39,12 +45,29 @@ struct TrackView: View {
                 song in
                 HStack{
                     VStack(alignment: .leading) {
-                        Text(song.title)
-                            .font(.headline)
+                        HStack{
+                            Text(song.title)
+                                .font(.headline)
+                            
+                            Button(action: {
+                                if let index = filteredSongs.firstIndex(where: { $0.id.rawValue == song.id.rawValue }){
+                                    musicData.shared.toggleFavorite(filteredSongs[index])
+                                    favoriteSongs = musicData.shared.favoriteSongs
+                                }else{
+                                    
+                                }
+                            }) {
+                                Image(systemName: favoriteSongs.contains(song.id) ? "heart.fill" : "heart")
+                                    .foregroundColor(.gray)
+                            }
+                            
+                        }
                         Text(song.artistName)
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
+
                     }
+                    
                     Spacer()
                     AsyncImage(url: song.artwork?.url(width: 60, height: 60))
                     {
@@ -56,6 +79,16 @@ struct TrackView: View {
                     placeholder: {
                         ProgressView()
                     }
+                }.onTapGesture {
+                    if let index = filteredSongs.firstIndex(where: { $0.id.rawValue == song.id.rawValue })
+                        {
+                            print(index)
+                            globalState.detailViewSongIndex = index
+                            print(globalState.detailViewSongIndex)
+                            globalState.selectedTab = 0
+                        }
+                        else{}
+
                 }
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                         if(musicData.shared.editablePlaylistID.contains(playlist.id))
@@ -70,9 +103,32 @@ struct TrackView: View {
                 }
             }
             
-        }.onAppear{
-            
+        }      
+        .onAppear{
             showSongFromPlaylist()
+            songs = musicData.shared.song.compactMap { $0 }
+            deletedSongs = musicData.shared.deletedSongs
+            favoriteSongs = musicData.shared.favoriteSongs
+            deletedRecord = musicData.shared.deletedRecord
+            filteredSongs = songs.filter { song in
+                !deletedSongs.contains(song.id) && !deletedRecord.contains(song.id)
+            }
+        }.onChange(of: musicData.shared.deletedSongs) { _, _ in
+            songs = musicData.shared.song.compactMap { $0 }
+            deletedSongs = musicData.shared.deletedSongs
+            favoriteSongs = musicData.shared.favoriteSongs
+            deletedRecord = musicData.shared.deletedRecord
+            filteredSongs = songs.filter { song in
+                !deletedSongs.contains(song.id) && !deletedRecord.contains(song.id)
+            }
+        }.refreshable {
+            songs = musicData.shared.song.compactMap { $0 }
+            deletedSongs = musicData.shared.deletedSongs
+            favoriteSongs = musicData.shared.favoriteSongs
+            deletedRecord = musicData.shared.deletedRecord
+            filteredSongs = songs.filter { song in
+                !deletedSongs.contains(song.id) && !deletedRecord.contains(song.id)
+            }
         }
     }
 }

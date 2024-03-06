@@ -18,6 +18,7 @@ struct playListView: View {
     @State var detail: String = ""
     @State var customizedPlaylistID:[Playlist.ID] = []
     @State var showingHelpAlert = false
+    @ObservedObject var globalState: GlobalState
     
     @State var playlists:[Playlist] = []
     
@@ -76,7 +77,7 @@ struct playListView: View {
                 }
             }
             .navigationDestination(for: Playlist.self) { item in
-                TrackView(playlist: item)
+                TrackView(playlist: item,globalState: globalState)
             }.toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     if selection != "All" {
@@ -176,6 +177,6 @@ struct FormView: View {
 }
 
 
-#Preview {
-    playListView()
-}
+//#Preview {
+//    playListView()
+//}

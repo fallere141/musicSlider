@@ -20,7 +20,7 @@ struct ContentView: View {
                 }.tag(0)
                 .environmentObject(globalState)
             
-            playListView()
+            playListView(globalState: globalState)
                 .tabItem {
                     Label("Playlist", systemImage: "music.note.list")
                 }.tag(1)
