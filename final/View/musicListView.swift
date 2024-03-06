@@ -30,6 +30,7 @@ struct musicListView: View {
                                 Text(song.title)
                                     .font(.headline)
                                 Button(action: {
+                                    print("button:  add favourite")
                                     musicData.shared.toggleFavorite(song)
                                     favoriteSongs = musicData.shared.favoriteSongs
                                 }) {

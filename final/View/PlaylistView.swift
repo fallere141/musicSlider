@@ -82,6 +82,7 @@ struct playListView: View {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     if selection != "All" {
                         Button("add playlist") {
+                            print("button: add playlist")
                             addingSheet.toggle()
                             playlists = musicData.shared.playlist.compactMap({$0})
                             customizedPlaylistID = musicData.shared.editablePlaylistID
@@ -89,6 +90,7 @@ struct playListView: View {
                     }
                     else{
                         Button("add playlist") {
+                            print("button: add playlist")
                             
                         }.opacity(0)
                     }
@@ -130,6 +132,7 @@ struct FormView: View {
                 Section {
                     HStack {
                         Button("Save") {
+                            print("button: save")
                             savePlaylist()
                         }
                         .disabled(isSaving)
@@ -145,6 +148,7 @@ struct FormView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
+                        print("button: cancel")
                         addingSheet.toggle()
                     }
                 }
@@ -177,6 +181,3 @@ struct FormView: View {
 }
 
 
-//#Preview {
-//    playListView()
-//}

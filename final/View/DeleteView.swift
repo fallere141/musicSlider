@@ -45,6 +45,7 @@ struct DeleteView: View {
                     }
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                         Button(role: .destructive) {
+                            print("button: recover a song")
                             musicData.shared.removeSongFromDeleted(songId: song.id)
                         } label: {
                             Label("Recover", systemImage: "square.and.arrow.up")
@@ -56,6 +57,7 @@ struct DeleteView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
                     Button(action: {
+                        print("button: RecoverAllAlert")
                         showingRecoverAllAlert = true
                     }) {
                         Image(systemName: "square.and.arrow.up")
@@ -63,6 +65,7 @@ struct DeleteView: View {
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(action: {
+                        print("button: showingDeleteAlert")
                         showingDeleteAlert = true
                     }) {
                         Image(systemName: "trash")
@@ -81,9 +84,12 @@ struct DeleteView: View {
             }
             .alert("Confirm Recover", isPresented: $showingRecoverAllAlert, presenting: deletedSongs) { _ in
                 Button("Recover All", role: .destructive) {
+                    print("button: Recover All")
                     musicData.shared.recoverAllDeletedSongs()
                 }
-                Button("Cancel", role: .cancel) { }
+                Button("Cancel", role: .cancel) {  
+                    print("button: Cancel All")
+                }
             } message: { _ in
                 Text("Are you sure you want to recover all deleted songs?")
             }
