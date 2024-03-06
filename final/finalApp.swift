@@ -34,8 +34,10 @@ struct finalApp: App {
                     }
                 
                 if isLoading {
-                    SplashView()
-                        .transition(.opacity) 
+                    SplashView{
+                        isLoading = false
+                    }
+                        .transition(.opacity)
                 }
             }
         }
