@@ -14,3 +14,4 @@ To get access of the music library, you should run the on **a real device**, not
 Zhengxun Zhang: zhangzx@uchicago.edu
 Yun Liu: yunliuu@uchicago.edu
 # MusicSlider
+# MusicSlider
